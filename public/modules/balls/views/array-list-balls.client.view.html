@@ -1,7 +1,8 @@
 <section data-ng-controller="BallsController" data-ng-init="listAll()" class="container ballContent">
-  <table class="table table-striped">
+  <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
     <thead>
       <tr>
+        <th>Select</th>
         <th>Brand</th>
         <th>Name</th>
         <th>Fullname</th>
@@ -15,8 +16,10 @@
     </thead>
     <tbody>
       <tr data-ng-repeat="ball in balls">
+        <td><p class="form-control-static">
+            <input type="checkbox" id="select" placeholder="Select" data-ng-model="ball.selected"></td>
         <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
-            <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index) && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.brand"></td>
+            <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index)" data-ng-model="ball.brand"></td>
         <td>{{ball.name}}</td>
         <td>{{ball.fullname}}</td>
         <td>{{ball.color}}</td>
