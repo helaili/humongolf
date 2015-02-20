@@ -1,0 +1,176 @@
+<section data-ng-controller="BallsController" data-ng-init="find()" class="container ballContent">
+    <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-md-10">
+          <div class="row">
+            <p class="pull-right visible-xs">
+              <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+            <div class="jumbotron">
+              <h1>Hello, world!</h1>
+              <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 col-lg-3"  data-ng-repeat="ball in balls">
+              <div class="thumbnail ball-thumbnail">
+                <img src="/modules/balls/img/{{ball.images.small}}" class="img-responsive" alt="...">
+                <div class="caption">
+                  <h5>{{ball.brand}}</h5>
+                  <small>{{ball.name}} - {{ball.color}}</small>
+                  <p>
+                    <h6><del ng-if="ball.avgPrice != ball.minPrice">${{ball.price.avg}}</del>&nbsp;${{ball.price.min}}</h6>
+                  </p>
+                </div>
+                <div class="btn-group">
+                    <a data-ng-href="#!/balls/{{ball._id}}" class="btn btn-primary">
+                      <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 
+                    </a>
+                    
+                    <button type="button" class="btn btn-warning" ng-click="setBallPublishedState(ball._id, true)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0 && !ball.published"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></button>
+                    <button type="button" class="btn btn-success"  ng-click="setBallPublishedState(ball._id, false)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0 && ball.published"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></button>
+                    
+                
+                    <button type="button" class="btn btn-warning"  ng-click="addToAdminCart(ball, true)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></button>
+                    
+                  </div>
+              </div>
+            </div>
+          </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+
+        <div class="col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Brand</h3>
+            </div>
+            <div class="panel-body">
+                  <label class="checkbox panel-label" data-ng-repeat="brand in ballBrands">
+                    <input type="checkbox" value="{{brand.label}}" ng-model="brand.selected" ng-change="find()">
+                    {{brand.label}}
+                  </label>
+            </div>
+          </div>
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Pieces</h3>
+            </div>
+            <div class="panel-body">
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="2">
+                    2 Pieces
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="3">
+                    3 Pieces
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="4">
+                    4 Pieces
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="5">
+                    5 Pieces
+                  </label>
+            </div>
+          </div>
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Color</h3>
+            </div>
+            <div class="panel-body">
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="white">
+                    White
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="yellow">
+                    Yellow
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="pink">
+                    Pink
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="green">
+                    Green
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" value="orange">
+                    Orange
+                  </label>
+            </div>
+          </div>
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Other options</h3>
+            </div>
+            <div class="panel-body">
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" ng-model="recycled" ng-click="recycledChanged()">
+                    Recycled
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" ng-model="custom" ng-click="customChanged()">
+                    Custom
+                  </label>
+            </div>
+          </div>
+
+          <div class="panel panel-primary" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
+            <div class="panel-heading">
+              <h3 class="panel-title">Published</h3>
+            </div>
+            <div class="panel-body">
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" ng-model="publishedTrue" ng-click="publishedCheckboxChanged(true)">
+                    True
+                  </label>
+                  <label class="checkbox panel-label">
+                    <input type="checkbox" ng-model="publishedFalse" ng-click="publishedCheckboxChanged(false)">
+                    False
+                  </label>
+            </div>
+          </div>
+
+          <div class="panel panel-primary" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
+            <div class="panel-heading">
+              <li role="presentation" class="dropdown" style="list-style : none;">
+                <a id="drop4" href="#" class="dropdown-toggle" aria-haspopup="true" role="button" aria-expanded="false">
+                  {{cartTypeLabel}}
+                  <span class="caret"></span>
+                </a>
+                <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="switchCart(carts.same.value)">Same ball</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="switchCart(carts.differentColor.value)">Different color</a></li>
+                </ul>
+              </li>
+            </div>
+            <div class="panel-body">
+              <p data-ng-repeat="ball in cart">
+                <small class="panel-label">
+                  <button type="button" class="btn btn-xs btn-primary"  ng-click="removeFromAdminCart($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></button>
+                  {{ball.fullname}}</small>
+              </p>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default btn-xs" id="saveCartButton" ng-click="saveCart()">Update</button>
+                <button type="button" class="btn btn-default btn-xs" ng-click="clearCart()">Clear</button>
+              </div>
+              
+            </div>
+          </div>
+        </div><!--/.sidebar-offcanvas-->
+      </div>
+</section>
+
+
+<script type="text/javascript">
+$(document).ready(function () {
+  $('[data-toggle="offcanvas"]').click(function () {
+    $('.row-offcanvas').toggleClass('active')
+  }); 
+});
+</script>

@@ -1,0 +1,19 @@
+<section data-ng-controller="RangefindersController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Rangefinders</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="rangefinder in rangefinders" data-ng-href="#!/rangefinders/{{rangefinder._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="rangefinder.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="rangefinder.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="rangefinder.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!rangefinders.$resolved || rangefinders.length">
+    	No Rangefinders yet, why don't you <a href="/#!/rangefinders/create">create one</a>?
+    </div>
+</section>

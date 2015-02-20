@@ -1,0 +1,26 @@
+<div ng-controller="HomeController" class="container marketing">
+      <!-- START THE FEATURETTES -->
+    
+    <div class="row">
+      <div class="col-lg-4" ng-repeat="featurette in featurettes">
+        <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
+        <h2>{{featurette.heading}}</h2>
+        <p>{{featurette.longText}}</p>
+        <p><a class="btn btn-default" href="{{featurette.link}}" role="button">View details »</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+  
+  <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>© 2014 Humongolf , Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+      </footer>
+
+    
+</div>

@@ -1,0 +1,32 @@
+<section data-ng-controller="BallsController" data-ng-init="listAll()" class="container ballContent">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Name</th>
+        <th>Fullname</th>
+        <th>Color</th>
+        <th>HighNumer</th>
+        <th>Customizable</th>
+        <th>Recycled</th>
+        <th>Published</th>
+        <th>URLs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-ng-repeat="ball in balls">
+        <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
+            <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index) && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.brand"></td>
+        <td>{{ball.name}}</td>
+        <td>{{ball.fullname}}</td>
+        <td>{{ball.color}}</td>
+        <td>{{ball.highNumber}}</td>
+        <td>{{ball.customizable}}</td>
+        <td>{{ball.recycled}}</td>
+        <td>{{ball.published}}</td>
+        <td><span data-ng-repeat="url in ball.urls"><a href="{{url.url}}">{{url.source}}</a>&nbsp;</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</section>

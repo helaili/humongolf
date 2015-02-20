@@ -1,0 +1,21 @@
+<section data-ng-controller="FeaturettesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Featurettes</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="featurette in featurettes" data-ng-href="#!/featurettes/{{featurette._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Created on
+				<span data-ng-bind="featurette.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="featurette.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="featurette.name"></h4>
+            <span class="list-group-item-text">Enabled: {{featurette.enabled}}, Position: {{featurette.position}}<span>
+            
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!featurettes.$resolved || featurettes.length">
+    	No Featurettes yet, why don't you <a href="/#!/featurettes/create">create one</a>?
+    </div>
+</section>

@@ -1,0 +1,19 @@
+<section data-ng-controller="GpsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Gps</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="gp in gps" data-ng-href="#!/gps/{{gp._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="gp.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="gp.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="gp.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!gps.$resolved || gps.length">
+    	No Gps yet, why don't you <a href="/#!/gps/create">create one</a>?
+    </div>
+</section>
