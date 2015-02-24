@@ -29,10 +29,6 @@
                     
                     <button type="button" class="btn btn-warning" ng-click="setBallPublishedState(ball._id, true)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0 && !ball.published"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></button>
                     <button type="button" class="btn btn-success"  ng-click="setBallPublishedState(ball._id, false)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0 && ball.published"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></button>
-                    
-                
-                    <button type="button" class="btn btn-warning"  ng-click="addToAdminCart(ball, true)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></button>
-                    
                   </div>
               </div>
             </div>
@@ -133,33 +129,6 @@
                     <input type="checkbox" ng-model="publishedFalse" ng-click="publishedCheckboxChanged(false)">
                     False
                   </label>
-            </div>
-          </div>
-
-          <div class="panel panel-primary" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-            <div class="panel-heading">
-              <li role="presentation" class="dropdown" style="list-style : none;">
-                <a id="drop4" href="#" class="dropdown-toggle" aria-haspopup="true" role="button" aria-expanded="false">
-                  {{cartTypeLabel}}
-                  <span class="caret"></span>
-                </a>
-                <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="switchCart(carts.same.value)">Same ball</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="switchCart(carts.differentColor.value)">Different color</a></li>
-                </ul>
-              </li>
-            </div>
-            <div class="panel-body">
-              <p data-ng-repeat="ball in cart">
-                <small class="panel-label">
-                  <button type="button" class="btn btn-xs btn-primary"  ng-click="removeFromAdminCart($index)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></button>
-                  {{ball.fullname}}</small>
-              </p>
-              <div class="btn-group">
-                <button type="button" class="btn btn-default btn-xs" id="saveCartButton" ng-click="saveCart()">Update</button>
-                <button type="button" class="btn btn-default btn-xs" ng-click="clearCart()">Clear</button>
-              </div>
-              
             </div>
           </div>
         </div><!--/.sidebar-offcanvas-->

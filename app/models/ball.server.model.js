@@ -78,6 +78,10 @@ var BallSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	women : {
+		type: Boolean,
+		default: false
+	},
 	color : {
 		type: String,
 		default: 'White',

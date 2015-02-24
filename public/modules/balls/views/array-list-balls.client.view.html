@@ -1,35 +1,46 @@
 <section data-ng-controller="BallsController" data-ng-init="listAll()" class="container ballContent">
-  <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-    <thead>
-      <tr>
-        <th>Select</th>
-        <th>Brand</th>
-        <th>Name</th>
-        <th>Fullname</th>
-        <th>Color</th>
-        <th>HighNumer</th>
-        <th>Customizable</th>
-        <th>Recycled</th>
-        <th>Published</th>
-        <th>URLs</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr data-ng-repeat="ball in balls">
-        <td><p class="form-control-static">
-            <input type="checkbox" id="select" placeholder="Select" data-ng-model="ball.selected"></td>
-        <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
-            <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index)" data-ng-model="ball.brand"></td>
-        <td>{{ball.name}}</td>
-        <td>{{ball.fullname}}</td>
-        <td>{{ball.color}}</td>
-        <td>{{ball.highNumber}}</td>
-        <td>{{ball.customizable}}</td>
-        <td>{{ball.recycled}}</td>
-        <td>{{ball.published}}</td>
-        <td><span data-ng-repeat="url in ball.urls"><a href="{{url.url}}">{{url.source}}</a>&nbsp;</span></td>
-      </tr>
-    </tbody>
-  </table>
-
+  <form class="form-horizontal" data-ng-submit="updateBalls()" novalidate>
+    <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
+      <thead>
+        <tr>
+          <th>Merge</th>
+          <th>Brand</th>
+          <th>Name</th>
+          <th>Fullname</th>
+          <th>Color</th>
+          <th>HighNumer</th>
+          <th>Customizable</th>
+          <th>Recycled</th>
+          <th>Published</th>
+          <th>Women</th>
+          <th>URLs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="ball in balls">
+          <td><p class="form-control-static">
+              <input type="checkbox" id="select" placeholder="Select" data-ng-model="ball.selected"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
+              <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index)" data-ng-model="ball.brand"></td>
+          <td>{{ball.name}}</td>
+          <td>{{ball.fullname}}</td>
+          <td>{{ball.color}}</td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="highNumber" placeholder="High Number" data-ng-model="ball.highNumber"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="customizable" placeholder="Customizable" data-ng-model="ball.customizable"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="recycled" placeholder="Recycled" data-ng-model="ball.recycled"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="published" placeholder="Published" data-ng-model="ball.published"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="women" placeholder="Women" data-ng-model="ball.women"></td>
+          <td><span data-ng-repeat="url in ball.urls"><a href="{{url.url}}">{{url.source}}</a>&nbsp;</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="form-group">
+      <input type="submit" class="btn btn-default">
+    </div>
+  </form>
 </section>

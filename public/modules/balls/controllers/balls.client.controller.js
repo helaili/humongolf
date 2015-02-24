@@ -182,75 +182,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			});
 		};
 
-		$scope.addToAdminCart = function(ball, recursive) {
-			if($scope.cart != null) {
-				//Check if ball is not already in cart
-				for(var index = 0; index < $scope.cart.length; index++) {
-					if($scope.cart[index]._id === ball._id) {
-						return;
-					}
-				}
-				$scope.cart.push(ball);
 
-				if(recursive) {
-					//Add linked balls 
-					var array; 
-					if($scope.cart  ===  $scope.carts.same.cart) {
-						array = ball.sameAs;
-					} else if($scope.cart  ===  $scope.carts.differentColor.cart) {
-						array = ball.differentColorAs;
-					}
-					
-					for(var arrayIndex = 0; arrayIndex < array.length; arrayIndex++) {
-						for(var ballIndex = 0; ballIndex < $scope.balls.length; ballIndex++) {
-							if(array[arrayIndex] === $scope.balls[ballIndex]._id) {
-								$scope.addToAdminCart($scope.balls[ballIndex], false);
-								break;
-							}
-						}
-					}
-				}
-			}
-		};
-
-		$scope.removeFromAdminCart = function(index) {
-			if($scope.cart != null) {
-				$scope.cart.splice(index, 1);
-				angular.element('#saveCartButton').removeClass('btn-success').addClass('btn-default');
-			}
-		};
-
-		$scope.switchCart = function(cartType) {
-			if(cartType === $scope.carts.same.value) {
-				$scope.cartTypeLabel = $scope.carts.same.label;
-				$scope.cart  =  $scope.carts.same.cart;
-				angular.element('#saveCartButton').removeClass('btn-success').addClass('btn-default');
-			} else if(cartType === $scope.carts.differentColor.value) {
-				$scope.cartTypeLabel = $scope.carts.differentColor.label;
-				$scope.cart  =  $scope.carts.differentColor.cart;
-				angular.element('#saveCartButton').removeClass('btn-success').addClass('btn-default');
-			}
-		};		
-
-		$scope.saveCart = function() {
-			if($scope.cart  ===  $scope.carts.same.cart) {
-				Balls.sameBall($scope.carts.same.cart, function(response) {
-					if(response.ok == true) {
-						angular.element('#saveCartButton').removeClass('btn-default').addClass('btn-success');
-					}	
-				});
-			} else if($scope.cart  ===  $scope.carts.differentColor.cart) {
-				Balls.differentColor($scope.carts.differentColor.cart, function(response) {
-					if(response.ok == true) {
-						angular.element('#saveCartButton').removeClass('btn-default').addClass('btn-success');
-					}	
-				});
-			}
-		};
-
-		$scope.clearCart = function() {
-			$scope.cart = [];
-		};
 
 		$scope.toggleEdit = function(flag) {
 			if($scope.authentication.user != null && $scope.authentication.user.roles.indexOf('admin') >= 0) {
@@ -305,6 +237,11 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 					$scope.cancelEdit();
 				}	
 			});
+		};
+
+
+		$scope.updateBalls = function() {
+			console.log('Ok');
 		};
 	}
 ]);
