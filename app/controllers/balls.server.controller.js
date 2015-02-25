@@ -145,7 +145,6 @@ exports.list = function(req, res) {
  */
 exports.listAll = function(req, res) { 
 	var query = Ball.find();
-	console.log('************ listAll ************');
 	query.sort('-fullname').exec(function(err, balls) {
 		if (err) {
 			return res.send(400, {
@@ -267,4 +266,116 @@ exports.differentColor = function(req, res) {
 		}
 	}
 	return res.send(200, {'ok' : true});
+};
+
+
+/*
+ * Merge several balls in one, update the ball collection and the importedBall collection
+ */
+exports.merge = function(req, res) {
+	//Expecting an array of balls
+	if(req.body.length >= 2) {
+		//Let's use the first ball as a starting point
+		var firstBall = req.body[0];
+		var ballsId = [];
+		ballsId.push(mongoose.Types.ObjectId(firstBall._id));
+
+		console.log('****** input ******');
+
+		for(var logcounter = 0; logcounter < req.body.length; logcounter++) {
+			console.log(req.body[logcounter]);
+		}
+		//Intilize the price if it doesn't exist so the merge and computations are easier
+		if(firstBall.price == null) {
+			firstBall.price = {};
+			firstBall.price.benchmarks = [];
+			
+			//These values will be overidden by acutal max and min
+			firstBall.price.min = 9999999;
+			firstBall.price.max = -1;
+		}
+
+		//Merging the different arrays
+		for(var counter = 1; counter < req.body.length; counter++) {
+			var currentBall = req.body[counter];
+			ballsId.push(mongoose.Types.ObjectId(currentBall._id));
+
+			if(currentBall.balls != null && firstBall.balls != null) {
+				firstBall.balls = firstBall.balls.concat(currentBall.balls);
+			} else if(currentBall.balls != null) {
+				firstBall.balls = currentBall.balls;
+			}
+			
+			if(currentBall.urls != null && firstBall.urls != null) {
+				firstBall.urls = firstBall.urls.concat(currentBall.urls);
+			} else if(currentBall.urls != null) {
+				firstBall.urls = currentBall.urls;
+			}
+			
+			if(currentBall.price != null) {
+				firstBall.price.benchmarks = firstBall.price.benchmarks.concat(currentBall.price.benchmarks);
+			}
+		}
+
+		
+		//Recalculating the prices
+		var sum = 0;
+		for(var benchmarksCounter=0; benchmarksCounter < firstBall.price.benchmarks.length; benchmarksCounter ++) {
+			sum += firstBall.price.benchmarks[benchmarksCounter].price;
+			firstBall.price.min = Math.min(firstBall.price.min,  firstBall.price.benchmarks[benchmarksCounter].price);
+			firstBall.price.max = Math.max(firstBall.price.max,  firstBall.price.benchmarks[benchmarksCounter].price);
+		}
+
+		if(sum != 0) {
+			//There is at least a price
+			firstBall.price.avg = sum / firstBall.price.benchmarks.length;
+		} else {
+			//There's no price
+			delete firstBall.price;
+		}
+
+		var now = Date.now();
+		firstBall.updated = now;
+		firstBall.created = now;
+
+		//Enforcing the creation of a new ball, easier for rollback
+		delete firstBall._id;
+
+		var ball = new Ball(firstBall);
+
+		//Let's save the new ball
+		ball.save(function(saveErr) {
+			if(saveErr)  {
+				console.log(saveErr);
+				return res.send(400, {
+					message: getErrorMessage(saveErr)
+				});
+			} else {
+				//Updating the imported balls so they point to the new one
+				Ball.db.collection('importedBalls').update({'_id' : {'$in' : ball.balls}}, 
+															{'$set' : {'published_ball' : ball._id}}, 
+															{'multi' : true}, function(updateErr, updateResult) {
+					if(updateErr)  {
+						console.log(updateErr);
+						return res.send(400, {
+							message: getErrorMessage(updateErr)
+						});
+					} else {
+						//Deleting the old balls as they are now merged in the new one
+						Ball.remove({'_id' : {'$in' : ballsId}}, function (deleteErr) {
+							if(deleteErr) {
+								console.log(deleteErr);
+								return res.send(400, {
+									message: getErrorMessage(deleteErr)
+								});	
+							} else {
+								return res.send(200, {'ok' : true});
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+	
 };

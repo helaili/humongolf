@@ -240,8 +240,39 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		};
 
 
-		$scope.updateBalls = function() {
-			console.log('Ok');
+		$scope.updateBall = function(ball) {
+			var button = $('#update-btn-'+ball._id);
+			console.log(button);
+			
+			button.removeClass('btn-default');
+			button.removeClass('btn-success');
+			button.removeClass('btn-danger');
+
+			ball.$update(function() {
+				button.addClass('btn-success');
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+				button.addClass('btn-danger');
+			});
+
+		};
+
+		$scope.mergeBalls = function() {
+			var ballsToMerge = [];
+
+			for(var ballIndex in $scope.balls) {
+				if($scope.balls[ballIndex].selected) {
+					ballsToMerge.push($scope.balls[ballIndex]);
+				}
+			}
+
+			Balls.merge(ballsToMerge, function(response) {
+				if(response.ok == true) {
+					$scope.listAll();
+					console.log('Redirect');
+				}	
+				console.log('did I?');
+			});
 		};
 	}
 ]);

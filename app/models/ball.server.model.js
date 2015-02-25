@@ -28,22 +28,50 @@ var BallSchema = new Schema({
 		required: 'Please fill full name',
 		trim: true
 	},
+	urls : [
+		{
+			source: {
+				type: String,
+				trim: true	
+			}, 
+			url : {
+				type : String,
+				trim : true
+			}, 
+			_id : { 
+				type : Schema.Types.ObjectId, 
+				required : false, 
+				turnOn: false 
+			}
+		}
+	],
+	balls : [Schema.Types.ObjectId],
 	price : {
 		min: {
-			type: Number,
-			required: 'Please fill minimum price',
-			trim: true
+			type: Number
 		},
 		max: {
-			type: Number,
-			required: 'Please fill maximum price',
-			trim: true
+			type: Number
 		},
 		avg: {
-			type: Number,
-			required: 'Please fill average price',
-			trim: true
-		}
+			type: Number
+		}, 
+		benchmarks : [
+			{
+				source: {
+					type: String,
+					trim: true	
+				}, 
+				price : {
+					type : Number
+				}, 
+				_id : { 
+					type : Schema.Types.ObjectId, 
+					required : false, 
+					turnOn: false 
+				}
+			}
+		]
 	},
 	images : {
 		small : {

@@ -14,6 +14,9 @@ module.exports = function(app) {
 	app.route('/balls/differentColor')
 		.post(users.requiresLogin, balls.hasAuthorization, balls.differentColor);
 
+	app.route('/balls/merge')
+		.post(users.requiresLogin, balls.hasAuthorization, balls.merge);
+
 	app.route('/balls/:ballId/setProperties')
 		.post(users.requiresLogin, balls.hasAuthorization, balls.setProperties);
 

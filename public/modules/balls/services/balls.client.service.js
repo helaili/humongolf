@@ -26,6 +26,10 @@ angular.module('balls').factory('Balls', ['$resource',
 				method : 'POST', 
       			url : 'balls/sameBall'	
 			},
+			merge: {
+				method : 'POST', 
+      			url : 'balls/merge'	
+			},
 			differentColor: {
 				method : 'POST', 
       			url : 'balls/differentColor'	
