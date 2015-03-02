@@ -30,6 +30,10 @@ angular.module('balls').factory('Balls', ['$resource',
 				method : 'POST', 
       			url : 'balls/merge'	
 			},
+			unmerge: {
+				method : 'POST', 
+      			url : 'balls/:ballId/unmerge'	
+			},
 			differentColor: {
 				method : 'POST', 
       			url : 'balls/differentColor'	

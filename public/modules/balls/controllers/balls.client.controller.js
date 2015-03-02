@@ -8,21 +8,13 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		$scope.publishedFalse = false;
 		$scope.cartTypeLabel = 'Select Cart type';
 		$scope.balls = [];
-
+		$scope.handicaps = [];
 		$scope.editFlags = {};
-
-
-		$scope.carts = {
-			'same' : {value : 0, label : 'Same ball', cart : []},
-			'differentColor' : {value : 1, label : 'Different color', cart : []}
-		};
 
 
 		Global.setShowCarousel(false);
 
 
-		
-		
 
 		$scope.publishedCheckboxChanged = function(publish) {
 			if(publish) {
@@ -160,6 +152,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		// Find a list of Balls
 		$scope.listAll = function() {
+			$scope.editFlags = {};
 			$scope.balls = Balls.listAll();
 		};
 
@@ -240,16 +233,32 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		};
 
 
-		$scope.updateBall = function(ball) {
+		$scope.updateBall = function(ball, index) {
 			var button = $('#update-btn-'+ball._id);
-			console.log(button);
+			
 			
 			button.removeClass('btn-default');
 			button.removeClass('btn-success');
 			button.removeClass('btn-danger');
 
+			ball.handicap = [];
+			for (var key in $scope.handicaps[index]) {
+   				if ($scope.handicaps[index].hasOwnProperty(key)) {
+   					if($scope.handicaps[index][key]) {
+   						ball.handicap.push(key);
+   					}
+   				}
+			}
+
 			ball.$update(function() {
 				button.addClass('btn-success');
+
+				$scope.editFlags['brand.'+index] = false;
+				$scope.editFlags['name.'+index] = false;
+				$scope.editFlags['fullname.'+index] = false;
+				$scope.editFlags['color.'+index] = false;
+				$scope.editFlags['pieces.'+index] = false;	
+				$scope.editFlags['compression.'+index] = false;	
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 				button.addClass('btn-danger');
@@ -269,9 +278,15 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			Balls.merge(ballsToMerge, function(response) {
 				if(response.ok == true) {
 					$scope.listAll();
-					console.log('Redirect');
 				}	
-				console.log('did I?');
+			});
+		};
+
+		$scope.unmergeBall = function(ball) {
+			Balls.unmerge(ball, function(response) {
+				if(response.ok == true) {
+					$scope.listAll();
+				}	
 			});
 		};
 	}

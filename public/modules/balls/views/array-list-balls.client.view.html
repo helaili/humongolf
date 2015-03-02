@@ -1,25 +1,28 @@
-<section data-ng-controller="BallsController" data-ng-init="listAll()" class="container ballContent">
+<section data-ng-controller="BallsController" data-ng-init="listAll()" class="ballContent large-container">
   <form class="form-horizontal" novalidate>
     <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
       <thead>
         <tr>
           <th>Merge</th>
           <th>Brand</th>
-          <th>Name</th>
-          <th>Fullname</th>
+          <th style="width : 75px;">Name</th>
+          <th style="width : 75px;">Fullname</th>
           <th>Color</th>
-          <th>HighNumer</th>
-          <th>Customizable</th>
-          <th>Recycled</th>
-          <th>Published</th>
+          <th>High Number</th>
+          <th>Custom</th>
+          <th>Rcycld</th>
+          <th>Pblshd</th>
           <th>Women</th>
+          <th>Pcs</th>
+          <th>Cpr</th>
+          <th>Hcp</th>
           <th>Updated</th>
           <th>URLs</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr data-ng-repeat="ball in balls">
+        <tr ng-repeat-start="ball in balls">
           <td><p class="form-control-static">
               <input type="checkbox" id="select" placeholder="Select" data-ng-model="ball.selected"></td>
           <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
@@ -47,10 +50,40 @@
               <input type="checkbox" id="published" placeholder="Published" data-ng-model="ball.published"></td>
           <td><p class="form-control-static">
               <input type="checkbox" id="women" placeholder="Women" data-ng-model="ball.women"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('pieces.'+$index)" ng-click="toggleEdit('pieces.'+$index)">{{ball.pieces}}</p>
+              <input type="text" class="form-control" id="pieces" placeholder="Pieces" ng-if="getEditFlag('pieces.'+$index)" data-ng-model="ball.pieces"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('compression.'+$index)" ng-click="toggleEdit('compression.'+$index)">{{ball.compression}}</p>
+              <input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression.'+$index)" data-ng-model="ball.compression"></td>
+          <td><p class="form-control-static" ng-repeat="hcp in ['high', 'mid', 'low']" >
+              <input type="checkbox" id="handicap" placeholder="Handicap" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">{{hcp}}</p></td>
           <td>{{ball.updated.substring(0, 10)}}</td>
-          <td><span data-ng-repeat="url in ball.urls"><a href="{{url.url}}" target="_blank">{{url.source}}</a>&nbsp;</span></td>
-          <td><p class="form-control-static">
-              <input type="button" id="update-btn-{{ball._id}}" class="btn btn-default" value="Update" ng-click="updateBall(ball)"></td>
+          <td><span data-ng-repeat="benchmark in ball.benchmarks"><a href="{{benchmark.url}}" target="_blank">{{benchmark.source}}</a>&nbsp;</span></td>
+          <td>
+            <p class="form-control-static">
+              <input type="button" id="update-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Update" ng-click="updateBall(ball, $index)">
+            </p>
+            <p class="form-control-static">
+              <input type="button" id="unmerge-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Unmerge" ng-click="unmergeBall(ball)">
+            </p>
+          </td>
+        </tr>
+        <tr ng-repeat-end ng-if="$index%10 == 0 && $index != 0">
+          <th>Merge</th>
+          <th>Brand</th>
+          <th>Name</th>
+          <th>Fullname</th>
+          <th>Color</th>
+          <th>High Number</th>
+          <th>Custom</th>
+          <th>Rcycld</th>
+          <th>Pblshd</th>
+          <th>Women</th>
+          <th>Pcs</th>
+          <th>Cpr</th>
+          <th>Hcp</th>
+          <th>Updated</th>
+          <th>URLs</th>
+          <th >Action</th>
         </tr>
       </tbody>
     </table>
