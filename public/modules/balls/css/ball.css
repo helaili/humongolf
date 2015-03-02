@@ -61,7 +61,9 @@ footer {
   }
 }
 
-
+.large-container : {
+  width: 100%;
+}
 
 .panel-body {
   padding-left: 35px;

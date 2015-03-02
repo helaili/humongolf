@@ -1,36 +1,94 @@
-<section data-ng-controller="BallsController" data-ng-init="listAll()" class="container ballContent">
-  <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-    <thead>
-      <tr>
-        <th>Select</th>
-        <th>Brand</th>
-        <th>Name</th>
-        <th>Fullname</th>
-        <th>Color</th>
-        <th>HighNumer</th>
-        <th>Customizable</th>
-        <th>Recycled</th>
-        <th>Published</th>
-        <th>URLs</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr data-ng-repeat="ball in balls">
-        <td><p class="form-control-static">
-            <input type="checkbox" id="select" placeholder="Select" data-ng-model="ball.selected"></td>
-            <input type="checkbox" id="select" placeholder="Select same balls" data-ng-model="ball.selected"></td>
-        <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
-            <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index)" data-ng-model="ball.brand"></td>
-        <td>{{ball.name}}</td>
-        <td>{{ball.fullname}}</td>
-        <td>{{ball.color}}</td>
-        <td>{{ball.highNumber}}</td>
-        <td>{{ball.customizable}}</td>
-        <td>{{ball.recycled}}</td>
-        <td>{{ball.published}}</td>
-        <td><span data-ng-repeat="url in ball.urls"><a href="{{url.url}}">{{url.source}}</a>&nbsp;</span></td>
-      </tr>
-    </tbody>
-  </table>
-
+<section data-ng-controller="BallsController" data-ng-init="listAll()" class="ballContent large-container">
+  <form class="form-horizontal" novalidate>
+    <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
+      <thead>
+        <tr>
+          <th>Merge</th>
+          <th>Brand</th>
+          <th style="width : 75px;">Name</th>
+          <th style="width : 75px;">Fullname</th>
+          <th>Color</th>
+          <th>High Number</th>
+          <th>Custom</th>
+          <th>Rcycld</th>
+          <th>Pblshd</th>
+          <th>Women</th>
+          <th>Pcs</th>
+          <th>Cpr</th>
+          <th>Hcp</th>
+          <th>Updated</th>
+          <th>URLs</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat-start="ball in balls">
+          <td><p class="form-control-static">
+              <input type="checkbox" id="select" placeholder="Select" data-ng-model="ball.selected"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('brand.'+$index)" ng-click="toggleEdit('brand.'+$index)">{{ball.brand}}</p>
+              <input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand.'+$index)" data-ng-model="ball.brand"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('name.'+$index)" ng-click="toggleEdit('name.'+$index)">{{ball.name}}</p>
+              <input type="text" class="form-control" id="name" placeholder="Name" ng-if="getEditFlag('name.'+$index)" data-ng-model="ball.name"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('fullname.'+$index)" ng-click="toggleEdit('fullname.'+$index)">{{ball.fullname}}</p>
+              <input type="text" class="form-control" id="fullname" placeholder="Fullname" ng-if="getEditFlag('fullname.'+$index)" data-ng-model="ball.fullname"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('color.'+$index)" ng-click="toggleEdit('color.'+$index)">{{ball.color}}</p>
+              <select class="form-control" id="color" ng-if="getEditFlag('color.'+$index)" data-ng-model="ball.color">
+                <option value="White">White</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Pink">Pink</option>
+                <option value="Orange">Orange</option>
+                <option value="Green">Green</option>
+                <option value="Mixed">Mixed</option>
+                </select></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="highNumber" placeholder="High Number" data-ng-model="ball.highNumber"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="customizable" placeholder="Customizable" data-ng-model="ball.customizable"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="recycled" placeholder="Recycled" data-ng-model="ball.recycled"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="published" placeholder="Published" data-ng-model="ball.published"></td>
+          <td><p class="form-control-static">
+              <input type="checkbox" id="women" placeholder="Women" data-ng-model="ball.women"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('pieces.'+$index)" ng-click="toggleEdit('pieces.'+$index)">{{ball.pieces}}</p>
+              <input type="text" class="form-control" id="pieces" placeholder="Pieces" ng-if="getEditFlag('pieces.'+$index)" data-ng-model="ball.pieces"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('compression.'+$index)" ng-click="toggleEdit('compression.'+$index)">{{ball.compression}}</p>
+              <input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression.'+$index)" data-ng-model="ball.compression"></td>
+          <td><p class="form-control-static" ng-repeat="hcp in ['high', 'mid', 'low']" >
+              <input type="checkbox" id="handicap" placeholder="Handicap" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">{{hcp}}</p></td>
+          <td>{{ball.updated.substring(0, 10)}}</td>
+          <td><span data-ng-repeat="benchmark in ball.benchmarks"><a href="{{benchmark.url}}" target="_blank">{{benchmark.source}}</a>&nbsp;</span></td>
+          <td>
+            <p class="form-control-static">
+              <input type="button" id="update-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Update" ng-click="updateBall(ball, $index)">
+            </p>
+            <p class="form-control-static">
+              <input type="button" id="unmerge-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Unmerge" ng-click="unmergeBall(ball)">
+            </p>
+          </td>
+        </tr>
+        <tr ng-repeat-end ng-if="$index%10 == 0 && $index != 0">
+          <th>Merge</th>
+          <th>Brand</th>
+          <th>Name</th>
+          <th>Fullname</th>
+          <th>Color</th>
+          <th>High Number</th>
+          <th>Custom</th>
+          <th>Rcycld</th>
+          <th>Pblshd</th>
+          <th>Women</th>
+          <th>Pcs</th>
+          <th>Cpr</th>
+          <th>Hcp</th>
+          <th>Updated</th>
+          <th>URLs</th>
+          <th >Action</th>
+        </tr>
+      </tbody>
+    </table>
+    <div class="form-group">
+      <input type="button" class="btn btn-default" value="Merge Balls" ng-click="mergeBalls()">
+    </div>
+  </form>
 </section>

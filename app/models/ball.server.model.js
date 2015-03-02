@@ -30,21 +30,42 @@ var BallSchema = new Schema({
 	},
 	price : {
 		min: {
-			type: Number,
-			required: 'Please fill minimum price',
-			trim: true
+			type: Number
 		},
 		max: {
-			type: Number,
-			required: 'Please fill maximum price',
-			trim: true
+			type: Number
 		},
 		avg: {
-			type: Number,
-			required: 'Please fill average price',
-			trim: true
+			type: Number
 		}
-	},
+	}, 
+	benchmarks : [
+		{
+			source: {
+				type: String,
+				trim: true	
+			}, 
+			price : {
+				type : Number
+			}, 
+			freeSleeve : {
+				type: Boolean,
+				required : false
+			}, 
+			url : {
+				type : String,
+				trim : true
+			},
+			ball : {
+				type : Schema.Types.ObjectId
+			},
+			_id : { 
+				type : Schema.Types.ObjectId, 
+				required : false, 
+				turnOn: false 
+			}
+		}
+	],
 	images : {
 		small : {
 			type: String,
@@ -66,6 +87,12 @@ var BallSchema = new Schema({
 	pieces : {
 		type: Number
 	},
+	compression : {
+		type: Number
+	},
+	handicap : [
+		String
+	],
 	recycled : {
 		type: Boolean,
 		default: false
@@ -75,6 +102,10 @@ var BallSchema = new Schema({
 		default: false
 	},
 	customizable : {
+		type: Boolean,
+		default: false
+	},
+	women : {
 		type: Boolean,
 		default: false
 	},
