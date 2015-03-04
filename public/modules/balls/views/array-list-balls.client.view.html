@@ -8,15 +8,17 @@
           <th style="width : 75px;">Name</th>
           <th style="width : 75px;">Fullname</th>
           <th>Color</th>
-          <th>High Number</th>
-          <th>Custom</th>
+          <th>Hi Nbr</th>
+          <th>Cstm</th>
           <th>Rcycld</th>
           <th>Pblshd</th>
-          <th>Women</th>
+          <th>Wmn</th>
           <th>Pcs</th>
+          <th>Min Spd</th>
+          <th>Max Spd</th>
           <th>Cpr</th>
           <th>Hcp</th>
-          <th>Updated</th>
+          <th>Updd</th>
           <th>URLs</th>
           <th>Action</th>
         </tr>
@@ -52,6 +54,10 @@
               <input type="checkbox" id="women" placeholder="Women" data-ng-model="ball.women"></td>
           <td><p class="form-control-static" ng-if="!getEditFlag('pieces.'+$index)" ng-click="toggleEdit('pieces.'+$index)">{{ball.pieces}}</p>
               <input type="text" class="form-control" id="pieces" placeholder="Pieces" ng-if="getEditFlag('pieces.'+$index)" data-ng-model="ball.pieces"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('minSpeed.'+$index)" ng-click="toggleEdit('minSpeed.'+$index)">{{ball.minSpeed}}</p>
+              <input type="text" class="form-control" id="minSpeed" placeholder="Min Speed" ng-if="getEditFlag('minSpeed.'+$index)" data-ng-model="ball.minSpeed"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('maxSpeed.'+$index)" ng-click="toggleEdit('maxSpeed.'+$index)">{{ball.maxSpeed}}</p>
+              <input type="text" class="form-control" id="maxSpeed" placeholder="Max Speed" ng-if="getEditFlag('maxSpeed.'+$index)" data-ng-model="ball.maxSpeed"></td>
           <td><p class="form-control-static" ng-if="!getEditFlag('compression.'+$index)" ng-click="toggleEdit('compression.'+$index)">{{ball.compression}}</p>
               <input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression.'+$index)" data-ng-model="ball.compression"></td>
           <td><p class="form-control-static" ng-repeat="hcp in ['high', 'mid', 'low']" >
@@ -79,6 +85,8 @@
           <th>Pblshd</th>
           <th>Women</th>
           <th>Pcs</th>
+          <th>Min Spd</th>
+          <th>Max Spd</th>
           <th>Cpr</th>
           <th>Hcp</th>
           <th>Updated</th>

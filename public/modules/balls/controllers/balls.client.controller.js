@@ -259,6 +259,8 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				$scope.editFlags['color.'+index] = false;
 				$scope.editFlags['pieces.'+index] = false;	
 				$scope.editFlags['compression.'+index] = false;	
+				$scope.editFlags['minSpeed.'+index] = false;	
+				$scope.editFlags['maxSpeed.'+index] = false;	
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 				button.addClass('btn-danger');

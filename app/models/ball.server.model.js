@@ -87,6 +87,14 @@ var BallSchema = new Schema({
 	pieces : {
 		type: Number
 	},
+	minSpeed : {
+		type: Number,
+		default: 0
+	},
+	maxSpeed : {
+		type: Number,
+		default: 999
+	},
 	compression : {
 		type: Number
 	},
