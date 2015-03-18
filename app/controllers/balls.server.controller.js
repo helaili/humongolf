@@ -115,7 +115,7 @@ exports.delete = function(req, res) {
 /**
  * List of Balls
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
 
 	var filterFromQuery = JSON.parse(req.query.filters);
 	var query = Ball.find();
@@ -123,13 +123,13 @@ exports.list = function(req, res) {
 	if(filterFromQuery.hasOwnProperty('published')) {
 		query.where('published').equals(filterFromQuery.published);
 	}
-	
+
 	if(filterFromQuery.hasOwnProperty('brands')) {
 		query.where('brand').in(filterFromQuery.brands);
 	}
 
 
-	query.sort('-created').populate('user', 'displayName').exec(function(err, balls) {
+	query.exec(function(err, balls) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -143,7 +143,7 @@ exports.list = function(req, res) {
 /**
  * List of Balls
  */
-exports.listAll = function(req, res) { 
+exports.listAll = function(req, res) {
 	var query = Ball.find();
 	query.sort('brand name color').exec(function(err, balls) {
 		if (err) {
@@ -161,7 +161,7 @@ exports.listAll = function(req, res) {
 /**
  * List of brands
  */
-exports.listBrands = function(req, res) { 
+exports.listBrands = function(req, res) {
 	if(ballBrands === null) {
 		Ball.distinct({'published': true}, 'brand').exec(function(err, balls) {
 			if (err) {
@@ -184,7 +184,7 @@ exports.listBrands = function(req, res) {
 /**
  * Ball middleware
  */
-exports.ballByID = function(req, res, next, id) { 
+exports.ballByID = function(req, res, next, id) {
 	Ball.findById(id).populate('user', 'displayName').exec(function(err, ball) {
 		if (err) return next(err);
 		if (! ball) return next(new Error('Failed to load Ball ' + id));
@@ -225,14 +225,14 @@ exports.sameBall = function(req, res) {
   		});
 
   		/*
-		var virtualBallID; 
+		var virtualBallID;
 
 		var ids = [];
 
 		for(var counter = 0; counter < req.body.length; counter++) {
 			ids.push(req.body[counter]._id);
 		}
-		
+
 		Ball.where({'_id' : {'$in' : ids}}).update({ $set: {'virtualParent' : virtualBallID, published : false}}, function(err, numberAffected, raw) {
 			if (err) {
 				return res.send(400, {
@@ -284,11 +284,11 @@ exports.merge = function(req, res) {
 		ballsId.push(mongoose.Types.ObjectId(firstBall._id));
 
 
-		
+
 		//Intilize the price if it doesn't exist so the merge and computations are easier
 		if(firstBall.price == null) {
 			firstBall.price = {};
-			
+
 			//These values will be overidden by actual max and min
 			firstBall.price.min = 9999999;
 			firstBall.price.max = -1;
@@ -298,7 +298,7 @@ exports.merge = function(req, res) {
 		for(var counter = 1; counter < req.body.length; counter++) {
 			var currentBall = req.body[counter];
 			ballsId.push(mongoose.Types.ObjectId(currentBall._id));
-			
+
 			if(currentBall.benchmarks != null && firstBall.benchmarks != null) {
 				firstBall.benchmarks = firstBall.benchmarks.concat(currentBall.benchmarks);
 			} else if(currentBall.benchmarks != null) {
@@ -306,7 +306,7 @@ exports.merge = function(req, res) {
 			}
 		}
 
-		
+
 		//Recalculating the prices & building the array of imported balls id
 		var sum = 0;
 		for(var benchmarksCounter=0; benchmarksCounter < firstBall.benchmarks.length; benchmarksCounter ++) {
@@ -343,8 +343,8 @@ exports.merge = function(req, res) {
 				});
 			} else {
 				//Updating the imported balls so they point to the new one
-				Ball.db.collection('importedBalls').update({'_id' : {'$in' : importedBallsId}}, 
-															{'$set' : {'published_ball' : ball._id}}, 
+				Ball.db.collection('importedBalls').update({'_id' : {'$in' : importedBallsId}},
+															{'$set' : {'published_ball' : ball._id}},
 															{'multi' : true}, function(updateErr, updateResult) {
 					if(updateErr)  {
 						console.log(updateErr);
@@ -358,7 +358,7 @@ exports.merge = function(req, res) {
 								console.log(deleteErr);
 								return res.send(400, {
 									message: getErrorMessage(deleteErr)
-								});	
+								});
 							} else {
 								return res.send(200, {'ok' : true});
 							}
@@ -380,7 +380,7 @@ exports.unmerge = function(req, res) {
 		} else {
 			var benchmarks = ball.benchmarks;
 			var now = Date.now();
-									
+
 			//Building the list of imported balls to retrieve
 			var ballsId = [];
 			for(var benchmarkCounter in benchmarks) {
@@ -393,7 +393,7 @@ exports.unmerge = function(req, res) {
 					console.log(findImportedBallsErr);
 					return res.send(400, {
 						message: getErrorMessage(findImportedBallsErr)
-					});	
+					});
 				} else {
 					for(var importedBallCounter in importedBalls) {
 						var importedBall = importedBalls[importedBallCounter];
@@ -446,7 +446,7 @@ exports.unmerge = function(req, res) {
 								console.log('new ball Id is ' + newBall._id);
 								console.log('imported ball Id is ' + newBall.benchmarks[0].ball);
 								//Updating the imported ball so it points to the new ball
-								Ball.db.collection('importedBalls').update({'_id' : newBall.benchmarks[0].ball}, 
+								Ball.db.collection('importedBalls').update({'_id' : newBall.benchmarks[0].ball},
 																			{'$set' : {'published_ball' : mongoose.Types.ObjectId(newBall._id)}}, function(updateErr) {
 									if(updateErr)  {
 										console.log(updateErr);
@@ -470,7 +470,7 @@ exports.unmerge = function(req, res) {
 							return res.send(200, {'ok' : true});
 						}
 					});
-				}	
+				}
 
 			});
 		}
