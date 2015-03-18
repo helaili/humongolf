@@ -8,35 +8,40 @@ angular.module('balls').factory('Balls', ['$resource',
 			update: {
 				method: 'PUT'
 			},
-    		listBrands: {
-      			method : 'GET', 
-      			url : 'balls/listBrands',
-      			isArray: true
+    	listBrands: {
+      	method : 'GET',
+      	url : 'balls/listBrands',
+      	isArray: true
+			},
+			list: {
+  			method : 'Get',
+  			url : 'balls',
+  			isArray: true
 			},
 			listAll: {
-      			method : 'GET', 
-      			url : 'balls/listAll',
-      			isArray: true
+  			method : 'GET',
+  			url : 'balls/listAll',
+  			isArray: true
 			},
 			setProperties: {
-				method : 'POST', 
-      			url : 'balls/:ballId/setProperties'	
+				method : 'POST',
+      	url : 'balls/:ballId/setProperties'
 			},
 			sameBall: {
-				method : 'POST', 
-      			url : 'balls/sameBall'	
+				method : 'POST',
+      			url : 'balls/sameBall'
 			},
 			merge: {
-				method : 'POST', 
-      			url : 'balls/merge'	
+				method : 'POST',
+      			url : 'balls/merge'
 			},
 			unmerge: {
-				method : 'POST', 
-      			url : 'balls/:ballId/unmerge'	
+				method : 'POST',
+      			url : 'balls/:ballId/unmerge'
 			},
 			differentColor: {
-				method : 'POST', 
-      			url : 'balls/differentColor'	
+				method : 'POST',
+      			url : 'balls/differentColor'
 			}
 		});
 	}

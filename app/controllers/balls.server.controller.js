@@ -128,8 +128,12 @@ exports.list = function(req, res) {
 		query.where('brand').in(filterFromQuery.brands);
 	}
 
+	if(filterFromQuery.hasOwnProperty('brand')) {
+		query.where('brand').equals(filterFromQuery.brand);
+	}
 
-	query.exec(function(err, balls) {
+
+	query.sort('brand name color').exec(function(err, balls) {
 		if (err) {
 			return res.send(400, {
 				message: getErrorMessage(err)
@@ -170,6 +174,7 @@ exports.listBrands = function(req, res) {
 				});
 			} else {
 				ballBrands = balls;
+				console.log(	ballBrands );
 				res.jsonp(balls);
 			}
 		});

@@ -1,4 +1,23 @@
 <section data-ng-controller="BallsController" data-ng-init="listAll()" class="ballContent large-container">
+
+  <form class="form-horizontal" novalidate>
+
+    <div class="form-group">
+      <div class="col-sm-1 right">
+        <label for="brandFilter" class="control-label">Brand: </label>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control" id="brandFilter" ng-model="brandFilter" ng-options="brand.label for brand in ballBrands">
+          <option value="">Choose Brand</option>
+        </select>
+      </div>
+      <div class="col-sm-1">
+        <input type="button" class="btn btn-default" value="Filter" ng-click="listAll()">
+      </div>
+    </divW
+  </form>
+
+
   <form class="form-horizontal" novalidate>
     <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
       <thead>

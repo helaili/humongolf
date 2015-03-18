@@ -10,7 +10,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		$scope.balls = [];
 		$scope.handicaps = [];
 		$scope.editFlags = {};
-
+		$scope.brandFilter = 'NONE';
 
 		Global.setShowCarousel(false);
 
@@ -147,13 +147,21 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		}
 
 		$scope.listBrands = function() {
-			$scope.brands = Balls.listBrands();
+			if($scope.brands == null) {
+				$scope.brands = Balls.listBrands();
+			}
 		};
 
 		// Find a list of Balls
 		$scope.listAll = function() {
 			$scope.editFlags = {};
-			$scope.balls = Balls.listAll();
+			initializeBallBrands();
+
+			if($scope.brandFilter == null) {
+				$scope.balls = Balls.listAll();
+			} else {
+				$scope.balls = Balls.list({'filters' : {'brand' : $scope.brandFilter.label}});
+			}
 		};
 
 
