@@ -23,28 +23,28 @@
 					<strong data-ng-bind="error"></strong>
 				</div>
 				<div class="form-group">
-					<label for="brand" class="col-sm-4 control-label">Brand: </label>
+					<label for="brand" class="col-sm-4 control-label" ng-click="toggleEdit('brand')">Brand: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('brand')" ng-click="toggleEdit('brand')">{{ball.brand}}</p>
 						<input type="text" class="form-control" id="brand" placeholder="Brand" ng-if="getEditFlag('brand') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.brand">
 					</div>
 				</div>
 				<div class="form-group" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-					<label for="name" class="col-sm-4 control-label">Name: </label>
+					<label for="name" class="col-sm-4 control-label" ng-click="toggleEdit('name')">Name: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('name')" ng-click="toggleEdit('name')">{{ball.name}}</p>
 						<input type="text" class="form-control" id="name" placeholder="Brand" ng-if="getEditFlag('name')" data-ng-model="ball.name">
 					</div>
 				</div>
 				<div class="form-group" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-					<label for="fullname" class="col-sm-4 control-label">Fullname: </label>
+					<label for="fullname" class="col-sm-4 control-label" ng-click="toggleEdit('fullname')">Fullname: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('fullname')" ng-click="toggleEdit('fullname')">{{ball.fullname}}</p>
 						<input type="text" class="form-control" id="fullname" placeholder="Fullnmae" ng-if="getEditFlag('fullname')" data-ng-model="ball.fullname">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="color" class="col-sm-4 control-label">Color: </label>
+					<label for="color" class="col-sm-4 control-label" ng-click="toggleEdit('color')">Color: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('color')" ng-click="toggleEdit('color')">{{ball.color}}</p>
 						<select class="form-control" id="color" ng-if="getEditFlag('color') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.color">
@@ -58,14 +58,21 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="pieces" class="col-sm-4 control-label">Pieces: </label>
+					<label for="pieces" class="col-sm-4 control-label" ng-click="toggleEdit('pieces')">Pieces: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('pieces')" ng-click="toggleEdit('pieces')">{{ball.pieces}}</p>
 						<input type="text" class="form-control" id="pieces" placeholder="Pieces" ng-if="getEditFlag('pieces') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.pieces">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="speed" class="col-sm-4 control-label">Swing speed: </label>
+					<label for="enveloppe" class="col-sm-4 control-label" ng-click="toggleEdit('enveloppe')">Enveloppe: </label>
+					<div class="col-sm-8">
+						<p class="form-control-static" ng-if="!getEditFlag('enveloppe')" ng-click="toggleEdit('enveloppe')">{{ball.enveloppe}}</p>
+						<input type="text" class="form-control" id="enveloppe" placeholder="Enveloppe" ng-if="getEditFlag('enveloppe') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.enveloppe">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="speed" class="col-sm-4 control-label" ng-click="toggleEdit('speed')">Swing speed: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('speed') && ball.minSpeed > 0 && ball.maxSpeed < 999" ng-click="toggleEdit('speed')">Between {{ball.minSpeed}} and {{ball.maxSpeed}}</p>
 						<p class="form-control-static" ng-if="!getEditFlag('speed') && ball.minSpeed > 0" ng-click="toggleEdit('speed')">Above {{ball.minSpeed}}</p>
@@ -76,7 +83,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="compression" class="col-sm-4 control-label">Compression: </label>
+					<label for="compression" class="col-sm-4 control-label" ng-click="toggleEdit('compression')">Compression: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('compression')" ng-click="toggleEdit('compression')">{{ball.compression}}</p>
 						<input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.compression">
@@ -91,52 +98,52 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="women" class="col-sm-4 control-label">Women ball: </label>
+					<label for="women" class="col-sm-4 control-label" ng-click="toggleEdit('women')">Women ball: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('women')" ng-click="toggleEdit('women')">{{ball.women}}</p>
 						<select class="form-control" id="women" ng-if="getEditFlag('women') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.women">
-							<option value="true">True</option>
-							<option value="false">False</option>
+							<option ng-selected="ball.women" value="true">True</option>
+							<option ng-selected="!ball.women" value="false">False</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="recycled" class="col-sm-4 control-label">Recycled: </label>
+					<label for="recycled" class="col-sm-4 control-label" ng-click="toggleEdit('recycled')">Recycled: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('recycled')" ng-click="toggleEdit('recycled')">{{ball.recycled}}</p>
 						<select class="form-control" id="recycled" ng-if="getEditFlag('recycled') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.recycled">
-							<option value="true">True</option>
-							<option value="false">False</option>
+							<option ng-selected="ball.recycled" value="true">True</option>
+							<option ng-selected="!ball.recycled" value="false">False</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="highNumber" class="col-sm-4 control-label">High Number: </label>
+					<label for="highNumber" class="col-sm-4 control-label" ng-click="toggleEdit('highNumber')">High Number: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('highNumber')" ng-click="toggleEdit('highNumber')">{{ball.highNumber}}</p>
 						<select class="form-control" id="highNumber" ng-if="getEditFlag('highNumber') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.highNumber">
-							<option value="true">True</option>
-							<option value="false">False</option>
+							<option ng-selected="ball.highNumber" value="true">True</option>
+							<option ng-selected="!ball.highNumber" value="false">False</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="customizable" class="col-sm-4 control-label">Customizable: </label>
+					<label for="customizable" class="col-sm-4 control-label" ng-click="toggleEdit('customizable')">Customizable: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('customizable')" ng-click="toggleEdit('customizable')">{{ball.customizable}}</p>
 						<select class="form-control" id="customizable" ng-if="getEditFlag('customizable') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.customizable">
-							<option value="true">True</option>
-							<option value="false">False</option>
+							<option ng-selected="ball.customizable" value="true">True</option>
+							<option ng-selected="!ball.customizable" value="false">False</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-					<label for="published" class="col-sm-4 control-label">Published: </label>
+					<label for="published" class="col-sm-4 control-label" ng-click="toggleEdit('published')">Published: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('published')" ng-click="toggleEdit('published')">{{ball.published}}</p>
 						<select class="form-control" id="published" ng-if="getEditFlag('published') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.published">
-							<option value="true">True</option>
-							<option value="false">False</option>
+							<option ng-selected="ball.published" value="true">True</option>
+							<option ng-selected="!ball.published" value="false">False</option>
 						</select>
 					</div>
 				</div>
@@ -168,7 +175,7 @@
 				<div class="form-group" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
 					<label for="description" class="col-sm-4 control-label">URLs: </label>
 					<div class="col-sm-8">
-						<p class="form-control-static" data-ng-repeat="url in ball.urls"><a href="{{url.url}}">{{url.source}}</a></p>
+						<p class="form-control-static" data-ng-repeat="benchmark in ball.benchmarks"><a href="{{benchmark.url}}">{{benchmark.source}}</a></p>
 					</div>
 				</div>
 				<div class="form-group" ng-if="editFlagsOn() && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">

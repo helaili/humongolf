@@ -14,12 +14,12 @@
       <div class="col-sm-1">
         <input type="button" class="btn btn-default" value="Filter" ng-click="listAll()">
       </div>
-    </divW
+    </div>
   </form>
 
 
   <form class="form-horizontal" novalidate>
-    <table class="table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
+    <table class="table-compact table table-striped" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
       <thead>
         <tr>
           <th>Merge</th>
@@ -36,8 +36,9 @@
           <th>Min Spd</th>
           <th>Max Spd</th>
           <th>Cpr</th>
-          <th>Hcp</th>
-          <th>Updd</th>
+          <th>Envlp</th>
+          <th>Handicap</th>
+          <th>Updated</th>
           <th>URLs</th>
           <th>Action</th>
         </tr>
@@ -79,20 +80,23 @@
               <input type="text" class="form-control" id="maxSpeed" placeholder="Max Speed" ng-if="getEditFlag('maxSpeed.'+$index)" data-ng-model="ball.maxSpeed"></td>
           <td><p class="form-control-static" ng-if="!getEditFlag('compression.'+$index)" ng-click="toggleEdit('compression.'+$index)">{{ball.compression}}</p>
               <input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression.'+$index)" data-ng-model="ball.compression"></td>
-          <td><p class="form-control-static" ng-repeat="hcp in ['high', 'mid', 'low']" >
-              <input type="checkbox" id="handicap" placeholder="Handicap" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">{{hcp}}</p></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('enveloppe.'+$index)" ng-click="toggleEdit('enveloppe.'+$index)">{{ball.enveloppe}}</p>
+              <input type="text" class="form-control" id="enveloppe" placeholder="Enveloppe" ng-if="getEditFlag('enveloppe.'+$index)" data-ng-model="ball.enveloppe"></td>
+          <td>
+            <div class="form-group-sm" ng-repeat="hcp in ['high', 'mid', 'low']" >
+              <input type="checkbox" id="handicap" placeholder="Handicap" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">{{hcp}}</div></td>
           <td>{{ball.updated.substring(0, 10)}}</td>
           <td><span data-ng-repeat="benchmark in ball.benchmarks"><a href="{{benchmark.url}}" target="_blank">{{benchmark.source}}</a>&nbsp;</span></td>
           <td>
-            <p class="form-control-static">
+            <div class="form-group-sm">
               <input type="button" id="update-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Update" ng-click="updateBall(ball, $index)">
-            </p>
-            <p class="form-control-static">
+            </div>
+            <div class="form-group-sm">
               <input type="button" id="unmerge-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Unmerge" ng-click="unmergeBall(ball)">
-            </p>
-            <p class="form-control-static">
+            </div>
+            <div class="form-group-sm">
               <input type="button" id="view-btn-{{ball._id}}" class="btn btn-default btn-xs" value="View" ng-click="openViewBallTab(ball)">
-            </p>
+            </div>
           </td>
         </tr>
         <tr ng-repeat-end ng-if="$index%10 == 0 && $index != 0">
@@ -110,7 +114,8 @@
           <th>Min Spd</th>
           <th>Max Spd</th>
           <th>Cpr</th>
-          <th>Hcp</th>
+          <th>Envlp</th>
+          <th>Handicap</th>
           <th>Updated</th>
           <th>URLs</th>
           <th >Action</th>

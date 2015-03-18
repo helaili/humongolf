@@ -63,6 +63,18 @@ footer {
 
 .large-container : {
   width: 100%;
+	padding-left : 10px;
+	padding-right : 10px;
+}
+
+
+.table-compact > thead > tr > th,
+.table-compact > tbody > tr > th,
+.table-compact > tfoot > tr > th,
+.table-compact > thead > tr > td,
+.table-compact > tbody > tr > td,
+.table-compact > tfoot > tr > td {
+	font-size : 10px;
 }
 
 .panel-body {
@@ -77,7 +89,6 @@ footer {
 .ball-thumbnail {
   height: 380px;
 }
-
 
 .ball-button {
   position: absolute;

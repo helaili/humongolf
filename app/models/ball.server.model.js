@@ -38,20 +38,20 @@ var BallSchema = new Schema({
 		avg: {
 			type: Number
 		}
-	}, 
+	},
 	benchmarks : [
 		{
 			source: {
 				type: String,
-				trim: true	
-			}, 
+				trim: true
+			},
 			price : {
 				type : Number
-			}, 
+			},
 			freeSleeve : {
 				type: Boolean,
 				required : false
-			}, 
+			},
 			url : {
 				type : String,
 				trim : true
@@ -59,10 +59,10 @@ var BallSchema = new Schema({
 			ball : {
 				type : Schema.Types.ObjectId
 			},
-			_id : { 
-				type : Schema.Types.ObjectId, 
-				required : false, 
-				turnOn: false 
+			_id : {
+				type : Schema.Types.ObjectId,
+				required : false,
+				turnOn: false
 			}
 		}
 	],
@@ -86,6 +86,10 @@ var BallSchema = new Schema({
 	},
 	pieces : {
 		type: Number
+	},
+	enveloppe: {
+		type: String,
+		trim: true
 	},
 	minSpeed : {
 		type: Number,
