@@ -65,7 +65,43 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="color" class="col-sm-4 control-label">Recycled: </label>
+					<label for="speed" class="col-sm-4 control-label">Swing speed: </label>
+					<div class="col-sm-8">
+						<p class="form-control-static" ng-if="!getEditFlag('speed') && ball.minSpeed > 0 && ball.maxSpeed < 999" ng-click="toggleEdit('speed')">Between {{ball.minSpeed}} and {{ball.maxSpeed}}</p>
+						<p class="form-control-static" ng-if="!getEditFlag('speed') && ball.minSpeed > 0" ng-click="toggleEdit('speed')">Above {{ball.minSpeed}}</p>
+						<p class="form-control-static" ng-if="!getEditFlag('speed') && ball.maxSpeed < 999" ng-click="toggleEdit('speed')">Below {{ball.maxSpeed}}</p>
+						<p class="form-control-static" ng-if="!getEditFlag('speed') && ball.minSpeed == 0 && ball.maxSpeed == 999" ng-click="toggleEdit('speed')">-</p>
+						<input type="text" class="form-control" id="minSpeed" placeholder="Min Speed" ng-if="getEditFlag('speed') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.minSpeed">
+						<input type="text" class="form-control" id="maxSpeed" placeholder="Max Speed" ng-if="getEditFlag('speed') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.maxSpeed">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="compression" class="col-sm-4 control-label">Compression: </label>
+					<div class="col-sm-8">
+						<p class="form-control-static" ng-if="!getEditFlag('compression')" ng-click="toggleEdit('compression')">{{ball.compression}}</p>
+						<input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.compression">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="handicap" class="col-sm-4 control-label">Handicap: </label>
+					<div class="col-sm-8">
+						<p class="form-control-static" ng-repeat="hcp in ['high', 'mid', 'low']" >
+	              <input type="checkbox" id="handicap" placeholder="Handicap" ng-disabled="authentication.user == null || authentication.user.roles.indexOf('admin') < 0" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">{{hcp}}
+						</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="women" class="col-sm-4 control-label">Women ball: </label>
+					<div class="col-sm-8">
+						<p class="form-control-static" ng-if="!getEditFlag('women')" ng-click="toggleEdit('women')">{{ball.women}}</p>
+						<select class="form-control" id="women" ng-if="getEditFlag('women') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.women">
+							<option value="true">True</option>
+							<option value="false">False</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="recycled" class="col-sm-4 control-label">Recycled: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('recycled')" ng-click="toggleEdit('recycled')">{{ball.recycled}}</p>
 						<select class="form-control" id="recycled" ng-if="getEditFlag('recycled') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.recycled">
@@ -75,7 +111,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="color" class="col-sm-4 control-label">High Number: </label>
+					<label for="highNumber" class="col-sm-4 control-label">High Number: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('highNumber')" ng-click="toggleEdit('highNumber')">{{ball.highNumber}}</p>
 						<select class="form-control" id="highNumber" ng-if="getEditFlag('highNumber') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.highNumber">
@@ -85,7 +121,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="color" class="col-sm-4 control-label">Customizable: </label>
+					<label for="customizable" class="col-sm-4 control-label">Customizable: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('customizable')" ng-click="toggleEdit('customizable')">{{ball.customizable}}</p>
 						<select class="form-control" id="customizable" ng-if="getEditFlag('customizable') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.customizable">
@@ -95,7 +131,7 @@
 					</div>
 				</div>
 				<div class="form-group" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
-					<label for="color" class="col-sm-4 control-label">Published: </label>
+					<label for="published" class="col-sm-4 control-label">Published: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('published')" ng-click="toggleEdit('published')">{{ball.published}}</p>
 						<select class="form-control" id="published" ng-if="getEditFlag('published') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.published">
@@ -123,7 +159,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="description" class="col-sm-4 control-label">Description: </label>
+					<label for="description" class="col-sm-4 control-label" ng-click="toggleEdit('description')">Description: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('description')" ng-click="toggleEdit('description')">{{ball.description}}</p>
 						<textarea class="form-control" rows="3" id="description" placeholder="Description" ng-if="getEditFlag('description') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.description"></textarea>

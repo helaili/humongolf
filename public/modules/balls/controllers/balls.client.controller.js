@@ -157,9 +157,9 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			$scope.editFlags = {};
 			initializeBallBrands();
 
-			if($scope.brandFilter == null) {
-				$scope.balls = Balls.listAll();
-			} else {
+			console.log($scope.brandFilter);
+
+			if($scope.brandFilter != 'NONE') {
 				$scope.balls = Balls.list({'filters' : {'brand' : $scope.brandFilter.label}});
 			}
 		};
