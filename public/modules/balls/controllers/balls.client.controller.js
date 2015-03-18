@@ -18,9 +18,9 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.publishedCheckboxChanged = function(publish) {
 			if(publish) {
-				$scope.publishedTrue = !$scope.publishedTrue;		
+				$scope.publishedTrue = !$scope.publishedTrue;
 			} else {
-				$scope.publishedFalse = !$scope.publishedFalse;		
+				$scope.publishedFalse = !$scope.publishedFalse;
 			}
 			$scope.find();
 		};
@@ -44,7 +44,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		// Remove existing Ball
 		$scope.remove = function( ball ) {
-			if ( ball ) { 
+			if ( ball ) {
 				ball.$remove();
 
 				for (var i in $scope.balls ) {
@@ -79,16 +79,16 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 					}
 					$rootScope.ballBrands = brands;
 				});
-			} 
+			}
 		};
 
-		
+
 		// Find a list of Balls
 		$scope.find = function() {
 			var filters = { };
 
 			initializeBallBrands();
-			
+
 			if(($scope.publishedTrue && !$scope.publishedFalse) || (!$scope.publishedTrue && $scope.publishedFalse)) {
 				filters.published = $scope.publishedTrue;
 			}
@@ -120,10 +120,10 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			}
 
 		};
-			
+
 
 		function foundOne() {
-			var counter = -1; 
+			var counter = -1;
 			if($rootScope.balls != null && $rootScope.balls.length > 0) {
 
 				while(++counter < $rootScope.balls.length) {
@@ -143,7 +143,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 						break;
 					}
 				}
-			}	
+			}
 		}
 
 		$scope.listBrands = function() {
@@ -156,7 +156,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			$scope.balls = Balls.listAll();
 		};
 
-		
+
 
 		$scope.setBallPublishedState = function(id, published) {
 			var ball = {'_id' : id, 'published' : published};
@@ -171,7 +171,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 							$scope.balls[counter].published = published;
 						}
 					}
-				}	
+				}
 			});
 		};
 
@@ -180,7 +180,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		$scope.toggleEdit = function(flag) {
 			if($scope.authentication.user != null && $scope.authentication.user.roles.indexOf('admin') >= 0) {
 				var oldValue = !$scope.editFlags[flag];
-				
+
 				$scope.editFlags[flag] = oldValue;
 
 			}
@@ -218,7 +218,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.submitEdits = function() {
 			var ballEdits = {
-				'_id' : $scope.ball._id, 
+				'_id' : $scope.ball._id,
 				'brand' : $scope.ball.brand,
 				'color' : $scope.ball.color,
 				'pieces' : $scope.ball.pieces,
@@ -228,15 +228,15 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			Balls.setProperties(ballEdits, function(response) {
 				if(response.ok == true) {
 					$scope.cancelEdit();
-				}	
+				}
 			});
 		};
 
 
 		$scope.updateBall = function(ball, index) {
 			var button = $('#update-btn-'+ball._id);
-			
-			
+
+
 			button.removeClass('btn-default');
 			button.removeClass('btn-success');
 			button.removeClass('btn-danger');
@@ -257,10 +257,10 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				$scope.editFlags['name.'+index] = false;
 				$scope.editFlags['fullname.'+index] = false;
 				$scope.editFlags['color.'+index] = false;
-				$scope.editFlags['pieces.'+index] = false;	
-				$scope.editFlags['compression.'+index] = false;	
-				$scope.editFlags['minSpeed.'+index] = false;	
-				$scope.editFlags['maxSpeed.'+index] = false;	
+				$scope.editFlags['pieces.'+index] = false;
+				$scope.editFlags['compression.'+index] = false;
+				$scope.editFlags['minSpeed.'+index] = false;
+				$scope.editFlags['maxSpeed.'+index] = false;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 				button.addClass('btn-danger');
@@ -280,7 +280,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			Balls.merge(ballsToMerge, function(response) {
 				if(response.ok == true) {
 					$scope.listAll();
-				}	
+				}
 			});
 		};
 
@@ -288,8 +288,12 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			Balls.unmerge(ball, function(response) {
 				if(response.ok == true) {
 					$scope.listAll();
-				}	
+				}
 			});
 		};
+
+		$scope.openViewBallTab = function(ball) {
+			$location.path('balls/'+ball._id);
+		}
 	}
 ]);

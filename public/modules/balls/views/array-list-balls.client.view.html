@@ -71,6 +71,9 @@
             <p class="form-control-static">
               <input type="button" id="unmerge-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Unmerge" ng-click="unmergeBall(ball)">
             </p>
+            <p class="form-control-static">
+              <input type="button" id="view-btn-{{ball._id}}" class="btn btn-default btn-xs" value="View" ng-click="openViewBallTab(ball)">
+            </p>
           </td>
         </tr>
         <tr ng-repeat-end ng-if="$index%10 == 0 && $index != 0">
