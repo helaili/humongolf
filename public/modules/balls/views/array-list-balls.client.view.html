@@ -89,7 +89,7 @@
           <td><span data-ng-repeat="benchmark in ball.benchmarks"><a href="{{benchmark.url}}" target="_blank">{{benchmark.source}}</a>&nbsp;</span></td>
           <td>
             <div class="form-group-sm">
-              <input type="button" id="update-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Update" ng-click="updateBall(ball, $index)">
+              <input type="button" id="update-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Update" ng-click="updateBallInArray(ball, $index)">
             </div>
             <div class="form-group-sm">
               <input type="button" id="unmerge-btn-{{ball._id}}" class="btn btn-default btn-xs" value="Unmerge" ng-click="unmergeBall(ball)">

@@ -31,6 +31,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			// Create new Ball object
 			var ball = new Balls (this.ball);
 
+			console.log('Am I saving?');
 			// Redirect after save
 			ball.$save(function(response) {
 				$location.path('balls/' + response._id);
@@ -61,7 +62,9 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		// Update existing Ball
 		$scope.update = function() {
-			var ball = $scope.ball ;
+			var ball = $scope.ball;
+
+			console.log('Saving ' + ball);
 
 			ball.$update(function() {
 				$location.path('balls/' + ball._id);
@@ -224,24 +227,14 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			}
 		};
 
-		$scope.submitEdits = function() {
-			var ballEdits = {
-				'_id' : $scope.ball._id,
-				'brand' : $scope.ball.brand,
-				'color' : $scope.ball.color,
-				'pieces' : $scope.ball.pieces,
-				'description' : $scope.ball.description
-			};
-
-			Balls.setProperties(ballEdits, function(response) {
-				if(response.ok == true) {
-					$scope.cancelEdit();
-				}
+		$scope.udpdateBallInView  = function(ball, index) {
+			$scope.ball.$update(function() {
+				$scope.cancelEdit();
 			});
 		};
 
 
-		$scope.updateBall = function(ball, index) {
+		$scope.updateBallInArray = function(ball, index) {
 			var button = $('#update-btn-'+ball._id);
 
 
@@ -269,6 +262,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				$scope.editFlags['compression.'+index] = false;
 				$scope.editFlags['minSpeed.'+index] = false;
 				$scope.editFlags['maxSpeed.'+index] = false;
+				$scope.editFlags['enveloppe.'+index] = false;
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 				button.addClass('btn-danger');

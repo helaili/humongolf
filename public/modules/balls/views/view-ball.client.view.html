@@ -1,6 +1,6 @@
 <section data-ng-controller="BallsController" data-ng-init="findOne()" class="container ballContent">
 	<div class="page-header">
-		<h1 data-ng-bind="ball.name"></h1>
+		<h1>{{ball.brand}} - {{ball.name}}</h1>
 	</div>
 	<div class="pull-right">
 		<a class="btn btn-primary" data-ng-href="#!/balls">
@@ -18,11 +18,11 @@
 			<img src="/modules/balls/img/{{ball.images.large}}" alt="{{ball.name}}" style="width: 400px; height: 400px;">
 		</a>
 		<div class="media-body col-sm-8">
-			<form class="form-horizontal" data-ng-submit="submitEdits()" role="form">
+			<form class="form-horizontal" data-ng-submit="udpdateBallInView()" role="form">
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
-				<div class="form-group">
+				<div class="form-group" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
 					<label for="brand" class="col-sm-4 control-label" ng-click="toggleEdit('brand')">Brand: </label>
 					<div class="col-sm-8">
 						<p class="form-control-static" ng-if="!getEditFlag('brand')" ng-click="toggleEdit('brand')">{{ball.brand}}</p>
@@ -92,9 +92,10 @@
 				<div class="form-group">
 					<label for="handicap" class="col-sm-4 control-label">Handicap: </label>
 					<div class="col-sm-8">
-						<p class="form-control-static" ng-repeat="hcp in ['high', 'mid', 'low']" >
-	              <input type="checkbox" id="handicap" placeholder="Handicap" ng-disabled="authentication.user == null || authentication.user.roles.indexOf('admin') < 0" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">{{hcp}}
-						</p>
+						<span ng-repeat="hcp in ['high', 'mid', 'low']" >
+	              <input class="form-control-static" type="checkbox" id="handicap" placeholder="Handicap" ng-disabled="authentication.user == null || authentication.user.roles.indexOf('admin') < 0" ng-checked="ball.handicap.indexOf(hcp) >= 0" ng-init="handicaps[$parent.$index][hcp] = (ball.handicap.indexOf(hcp) >= 0)" data-ng-model="handicaps[$parent.$index][hcp]">
+								<label class="form-control-static" for="handicap">{{hcp}}</label>
+						</span>
 					</div>
 				</div>
 				<div class="form-group">
