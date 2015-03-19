@@ -67,8 +67,6 @@ exports.update = function(req, res) {
 
 	ball = _.extend(ball , req.body);
 
-	console.log(ball);
-
 	ball.save(function(err) {
 		if (err) {
 			return res.send(400, {
