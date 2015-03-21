@@ -31,7 +31,6 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			// Create new Ball object
 			var ball = new Balls (this.ball);
 
-			console.log('Am I saving?');
 			// Redirect after save
 			ball.$save(function(response) {
 				$location.path('balls/' + response._id);
@@ -160,10 +159,13 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			$scope.editFlags = {};
 			initializeBallBrands();
 
-			console.log($scope.brandFilter);
+			if($scope.brandFilter == 'NONE' && $rootScope.brandFilter != null) {
+				$scope.brandFilter = $rootScope.brandFilter;
+			}
 
 			if($scope.brandFilter != 'NONE') {
 				$scope.balls = Balls.list({'filters' : {'brand' : $scope.brandFilter.label}});
+				$rootScope.brandFilter = $scope.brandFilter;
 			}
 		};
 
