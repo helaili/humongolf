@@ -19,6 +19,7 @@
 			<div class="form-group">
 				<div>
 					<p class="form-control-static" ng-if="!getEditFlag('description')" ng-click="toggleEdit('description')">{{ball.description}}</p>
+					<label for="description" class="col-sm-4 control-label" ng-if="!getEditFlag('description') && ball.description == null" ng-click="toggleEdit('description')">Enter description</label>
 					<textarea class="form-control" rows="3" id="description" placeholder="Description" ng-if="getEditFlag('description') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.description"></textarea>
 				</div>
 			</div>
