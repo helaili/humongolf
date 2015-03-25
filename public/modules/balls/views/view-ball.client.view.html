@@ -90,10 +90,15 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="compression" class="col-sm-4 control-label" ng-click="toggleEdit('compression')">Compression: </label>
+					<label for="compressionValue" class="col-sm-4 control-label" ng-click="toggleEdit('compression')">Compression: </label>
 					<div class="col-sm-8">
-						<p class="form-control-static" ng-if="!getEditFlag('compression')" ng-click="toggleEdit('compression')">{{ball.compression}}</p>
-						<input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.compression">
+						<p class="form-control-static" ng-if="!getEditFlag('compression')" ng-click="toggleEdit('compression')">{{ball.compression.class}}</p>
+						<input type="text" class="form-control" id="compressionValue" placeholder="Compression" ng-if="getEditFlag('compression') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.compression.value">
+						<select class="form-control" id="compressionClass" ng-if="getEditFlag('compression') && authentication.user != null && authentication.user.roles.indexOf('admin') >= 0" data-ng-model="ball.compression.class">
+							<option value="Low">Low</option>
+							<option value="Mid">Mid</option>
+							<option value="High">High</option>
+						</select>
 					</div>
 				</div>
 				<div class="form-group">

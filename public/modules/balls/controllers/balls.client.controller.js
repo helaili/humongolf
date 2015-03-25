@@ -261,7 +261,8 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				$scope.editFlags['fullname.'+index] = false;
 				$scope.editFlags['color.'+index] = false;
 				$scope.editFlags['pieces.'+index] = false;
-				$scope.editFlags['compression.'+index] = false;
+				$scope.editFlags['compressionValue.'+index] = false;
+				$scope.editFlags['compressionClass.'+index] = false;
 				$scope.editFlags['minSpeed.'+index] = false;
 				$scope.editFlags['maxSpeed.'+index] = false;
 				$scope.editFlags['enveloppe.'+index] = false;

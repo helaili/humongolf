@@ -100,7 +100,12 @@ var BallSchema = new Schema({
 		default: 999
 	},
 	compression : {
-		type: Number
+		value : {
+			type: Number
+		},
+		class : {
+			type : String
+		}
 	},
 	handicap : [
 		String
@@ -140,4 +145,4 @@ var BallSchema = new Schema({
 	}
 });
 
-mongoose.model('Ball', BallSchema);
+var Ball  = mongoose.model('Ball', BallSchema);

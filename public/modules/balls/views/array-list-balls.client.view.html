@@ -36,6 +36,7 @@
           <th>Min Spd</th>
           <th>Max Spd</th>
           <th>Cpr</th>
+          <th>Cpr</th>
           <th>Envlp</th>
           <th>Handicap</th>
           <th>Updated</th>
@@ -78,8 +79,14 @@
               <input type="text" class="form-control" id="minSpeed" placeholder="Min Speed" ng-if="getEditFlag('minSpeed.'+$index)" data-ng-model="ball.minSpeed"></td>
           <td><p class="form-control-static" ng-if="!getEditFlag('maxSpeed.'+$index)" ng-click="toggleEdit('maxSpeed.'+$index)">{{ball.maxSpeed}}</p>
               <input type="text" class="form-control" id="maxSpeed" placeholder="Max Speed" ng-if="getEditFlag('maxSpeed.'+$index)" data-ng-model="ball.maxSpeed"></td>
-          <td><p class="form-control-static" ng-if="!getEditFlag('compression.'+$index)" ng-click="toggleEdit('compression.'+$index)">{{ball.compression}}</p>
-              <input type="text" class="form-control" id="compression" placeholder="Compression" ng-if="getEditFlag('compression.'+$index)" data-ng-model="ball.compression"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('compressionValue.'+$index)" ng-click="toggleEdit('compressionValue.'+$index)">{{ball.compression.value}}</p>
+              <input type="text" class="form-control" id="compressionValue" placeholder="Compression" ng-if="getEditFlag('compressionValue.'+$index)" data-ng-model="ball.compression.value"></td>
+          <td><p class="form-control-static" ng-if="!getEditFlag('compressionClass.'+$index)" ng-click="toggleEdit('compressionClass.'+$index)">{{ball.compression.class}}</p>
+            <select class="form-control" id="compressionClass" ng-if="getEditFlag('compressionClass.'+$index)" data-ng-model="ball.compression.class">
+              <option value="Low">Low</option>
+              <option value="Mid">Mid</option>
+              <option value="High">High</option>
+            </select></td>
           <td><p class="form-control-static" ng-if="!getEditFlag('enveloppe.'+$index)" ng-click="toggleEdit('enveloppe.'+$index)">{{ball.enveloppe}}</p>
               <input type="text" class="form-control" id="enveloppe" placeholder="Enveloppe" ng-if="getEditFlag('enveloppe.'+$index)" data-ng-model="ball.enveloppe"></td>
           <td>
@@ -113,6 +120,7 @@
           <th>Pcs</th>
           <th>Min Spd</th>
           <th>Max Spd</th>
+          <th>Cpr</th>
           <th>Cpr</th>
           <th>Envlp</th>
           <th>Handicap</th>
