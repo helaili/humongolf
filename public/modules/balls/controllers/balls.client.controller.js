@@ -1,8 +1,8 @@
 'use strict';
 
 // Balls controller
-angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '$stateParams', '$location', 'Authentication', 'Balls', 'Global',
-	function($rootScope, $scope, $stateParams, $location, Authentication, Balls, Global ) {
+angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '$window', '$stateParams', '$location', 'Authentication', 'Balls', 'Global',
+	function($rootScope, $scope, $window, $stateParams, $location, Authentication, Balls, Global ) {
 		$scope.authentication = Authentication;
 		$scope.publishedTrue = true;
 		$scope.publishedFalse = false;
@@ -298,7 +298,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		};
 
 		$scope.openViewBallTab = function(ball) {
-			$location.path('balls/'+ball._id);
+			$window.open('/#!/balls/'+ball._id);
 		}
 	}
 ]);
