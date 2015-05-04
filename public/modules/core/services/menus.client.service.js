@@ -9,7 +9,7 @@ angular.module('core').service('Menus', [
 		// Define the menus object
 		this.menus = {};
 
-		// A private function for rendering decision 
+		// A private function for rendering decision
 		var shouldRender = function(user) {
 			if (user) {
 				for (var userRoleIndex in user.roles) {
@@ -81,9 +81,9 @@ angular.module('core').service('Menus', [
 			var isReallyPublic = false;
 			if(isPublic === true) {
 				isReallyPublic = true;
-			} else if(roles == null) {
+			} else if(!roles) {
 				isReallyPublic = true;
-			} else if(roles.length == 0) {
+			} else if(roles.length === 0) {
 				isReallyPublic = true;
 			} else if(isPublic === false && roles.length > 0) {
 				isReallyPublic = false;
@@ -115,9 +115,9 @@ angular.module('core').service('Menus', [
 			var isReallyPublic = false;
 			if(isPublic === true) {
 				isReallyPublic = true;
-			} else if(roles == null) {
+			} else if(!roles) {
 				isReallyPublic = true;
-			} else if(roles.length == 0) {
+			} else if(roles.length === 0) {
 				isReallyPublic = true;
 			} else if(isPublic === false && roles.length > 0) {
 				isReallyPublic = false;

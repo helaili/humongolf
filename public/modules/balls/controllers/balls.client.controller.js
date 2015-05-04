@@ -73,7 +73,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		};
 
 		function initializeBallBrands() {
-			if($rootScope.ballBrands == null) {
+			if(!$rootScope.ballBrands) {
 				Balls.listBrands(function(listOfBrandStrings) {
 					var brands = [];
 					for(var index = 0; index < listOfBrandStrings.length; index++) {
@@ -82,7 +82,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 					$rootScope.ballBrands = brands;
 				});
 			}
-		};
+		}
 
 
 		// Find a list of Balls
@@ -96,10 +96,10 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			}
 
 
-			if($rootScope.ballBrands != null) {
+			if($rootScope.ballBrands) {
 				for(var index = 0; index < $rootScope.ballBrands.length; index++) {
 					if($rootScope.ballBrands[index].selected === true) {
-						if(filters['brands'] == null) {
+						if(!filters.brands) {
 							filters.brands = [];
 						}
 						filters.brands.push($rootScope.ballBrands[index].label);
@@ -115,10 +115,10 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		$scope.findOne = function() {
 			$scope.ball = null;
 			$scope.findOneFromCache();
-			if($scope.ball == null) {
+			if(!$scope.ball) {
 				$scope.findOneFromServer();
 			}
-		}
+		};
 
 
 		// Retrieve a ball from the server
@@ -129,7 +129,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				$scope.getAllImages(ball);
 
 				//Refresh cached objects
-				if($rootScope.balls != null && $rootScope.balls.length > 0) {
+				if($rootScope.balls && $rootScope.balls.length > 0) {
 					var counter = -1;
 					while(++counter < $rootScope.balls.length) {
 						if(ball._id === $rootScope.balls[counter]._id) {
@@ -144,7 +144,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		// Retrieve a ball from the local cache
 		$scope.findOneFromCache = function() {
 			var counter = -1;
-			if($rootScope.balls != null && $rootScope.balls.length > 0) {
+			if($rootScope.balls && $rootScope.balls.length > 0) {
 
 				while(++counter < $rootScope.balls.length) {
 					if($stateParams.ballId === $rootScope.balls[counter]._id) {
@@ -168,7 +168,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		//TODO : remove = and use callback
 		$scope.listBrands = function() {
-			if($scope.brands == null) {
+			if(!$scope.brands) {
 				$scope.brands = Balls.listBrands();
 			}
 		};
@@ -179,11 +179,11 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			$scope.editFlags = {};
 			initializeBallBrands();
 
-			if($scope.brandFilter == 'NONE' && $rootScope.brandFilter != null) {
+			if($scope.brandFilter === 'NONE' && $rootScope.brandFilter) {
 				$scope.brandFilter = $rootScope.brandFilter;
 			}
 
-			if($scope.brandFilter != 'NONE') {
+			if($scope.brandFilter !== 'NONE') {
 				$scope.balls = Balls.list({'filters' : {'brand' : $scope.brandFilter.label}});
 				$rootScope.brandFilter = $scope.brandFilter;
 			}
@@ -194,7 +194,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		$scope.setBallPublishedState = function(id, published) {
 			var ball = {'_id' : id, 'published' : published};
 			Balls.setProperties(ball, function(response) {
-				if(response.ok == true) {
+				if(response.ok === true) {
 					var ballFound = false;
 					var counter = -1;
 
@@ -211,7 +211,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 
 		$scope.toggleEdit = function(flag) {
-			if($scope.authentication.user != null && $scope.authentication.user.roles.indexOf('admin') >= 0) {
+			if($scope.authentication.user && $scope.authentication.user.roles.indexOf('admin') >= 0) {
 				var oldValue = !$scope.editFlags[flag];
 
 				$scope.editFlags[flag] = oldValue;
@@ -220,8 +220,8 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		};
 
 		$scope.getEditFlag = function(flag) {
-			if($scope.authentication.user != null && $scope.authentication.user.roles.indexOf('admin') >= 0) {
-				if($scope.editFlags[flag] == null) {
+			if($scope.authentication.user && $scope.authentication.user.roles.indexOf('admin') >= 0) {
+				if($scope.editFlags[flag] === null) {
 					$scope.editFlags[flag] = false;
 				}
 				return $scope.editFlags[flag];
@@ -303,7 +303,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			}
 
 			Balls.merge(ballsToMerge, function(response) {
-				if(response.ok == true) {
+				if(response.ok === true) {
 					$scope.listAll();
 				}
 			});
@@ -311,7 +311,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.unmergeBall = function(ball) {
 			Balls.unmerge(ball, function(response) {
-				if(response.ok == true) {
+				if(response.ok === true) {
 					$scope.listAll();
 				}
 			});
@@ -324,7 +324,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		$scope.getAllImages = function(ball) {
 			Balls.getAllImages({'_id' : ball._id}, function(response) {
 				$scope.images = response;
-				console.log(response)
+				console.log(response);
 			});
 		};
 
