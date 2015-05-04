@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 
-var ballBrands = null;
+var cache = {};
+
 
 /**
  * Get the error message from error object
@@ -132,6 +133,14 @@ exports.list = function(req, res) {
 		query.where('brand').equals(filterFromQuery.brand);
 	}
 
+	if(filterFromQuery.hasOwnProperty('colors')) {
+		query.where('color').in(filterFromQuery.colors);
+	}
+
+	if(filterFromQuery.hasOwnProperty('pieces')) {
+		query.where('pieces').in(filterFromQuery.pieces);
+	}
+
 
 	query.sort('brand name color').exec(function(err, balls) {
 		if (err) {
@@ -162,27 +171,31 @@ exports.listAll = function(req, res) {
 
 
 
-/**
- * List of brands
+/*
+ * Retrieve all disctinct values of the 'attribute' passed in the query
+ * Used to build the filters for brands, pieces, colors...
  */
-exports.listBrands = function(req, res) {
-	if(ballBrands === null) {
-		Ball.distinct({'published': true}, 'brand').exec(function(err, balls) {
-			if (err) {
-				return res.send(400, {
-					message: getErrorMessage(err)
-				});
-			} else {
-				ballBrands = balls;
-				res.jsonp(balls);
-			}
-		});
-	} else {
-		res.jsonp(ballBrands);
+exports.distinctValues = function(req, res) {
+	var attribute = req.query.attribute;
+
+
+	if(attribute) {
+		if(cache[attribute]) {
+			res.jsonp(cache[attribute]);
+		} else {
+			Ball.distinct(attribute, {'published': true}).exec(function(err, values) {
+				if (err) {
+					return res.send(400, {
+						message: getErrorMessage(err)
+					});
+				} else {
+					cache[attribute] = values;
+					res.jsonp(values);
+				}
+			});
+		}
 	}
 };
-
-
 
 
 /**
@@ -209,6 +222,7 @@ exports.hasAuthorization = function(req, res, next) {
 		next();
 	}
 };
+
 
 exports.sameBall = function(req, res) {
 	if(req.body.length >= 2) {
@@ -470,6 +484,12 @@ exports.unmerge = function(req, res) {
 	});
 };
 
+
+
+/*
+ * Retrieve the images from the imported balls linked to this one so we can display the original images.
+ * Used in admin mode to fix default selection.
+ */
 
 exports.getAllImages = function(req, res) {
 	Ball.db.collection('importedBalls').find({'published_ball' : req.ball._id}, {'images' : 1}, function(findImportedBallsErr, importedBalls) {

@@ -5,8 +5,9 @@ module.exports = function(app) {
 	var balls = require('../../app/controllers/balls');
 
 	// Balls Routes
-	app.route('/balls/listBrands')
-		.get(balls.listBrands);
+	
+	app.route('/balls/distinctValues')
+		.get(balls.distinctValues);
 
 	app.route('/balls/sameBall')
 		.post(users.requiresLogin, balls.hasAuthorization, balls.sameBall);

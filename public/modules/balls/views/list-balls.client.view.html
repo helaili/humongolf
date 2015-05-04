@@ -14,14 +14,17 @@
           <div class="row">
             <div class="col-md-4 col-lg-3"  data-ng-repeat="ball in balls">
               <div class="thumbnail ball-thumbnail">
-                <img src="/modules/balls/img/{{ball.images.small}}" class="img-responsive" alt="..." style="width: 150px; height: 150px;">
+                <a data-ng-href="#!/balls/{{ball._id}}">
+                  <img src="/modules/balls/img/{{ball.images.small}}" class="img-responsive" alt="..." style="width: 150px; height: 150px;">
+                </a>
                 <div class="caption">
                   <h5>{{ball.brand}}</h5>
-                  <small>{{ball.name}} - {{ball.color}}</small>
+                  <a data-ng-href="#!/balls/{{ball._id}}"><small>{{ball.name}} - {{ball.color}}</small></a>
                   <p>
                     <h6><del ng-if="ball.avgPrice != ball.minPrice">${{ball.price.avg}}</del>&nbsp;${{ball.price.min}}</h6>
                   </p>
                 </div>
+                <!--
                 <div class="btn-group">
                     <a data-ng-href="#!/balls/{{ball._id}}" class="btn btn-primary">
                       <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
@@ -29,7 +32,9 @@
 
                     <button type="button" class="btn btn-warning" ng-click="setBallPublishedState(ball._id, true)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0 && !ball.published"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></button>
                     <button type="button" class="btn btn-success"  ng-click="setBallPublishedState(ball._id, false)" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0 && ball.published"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></button>
+
                   </div>
+                -->
               </div>
             </div>
           </div><!--/row-->
@@ -53,22 +58,10 @@
               <h3 class="panel-title">Pieces</h3>
             </div>
             <div class="panel-body">
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="2">
-                    2 Pieces
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="3">
-                    3 Pieces
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="4">
-                    4 Pieces
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="5">
-                    5 Pieces
-                  </label>
+              <label class="checkbox panel-label" data-ng-repeat="pieces in ballPieces">
+                <input type="checkbox" value="{{pieces.label}}" ng-model="pieces.selected" ng-change="find()">
+                {{pieces.label}} Pieces
+              </label>
             </div>
           </div>
 
@@ -77,26 +70,10 @@
               <h3 class="panel-title">Color</h3>
             </div>
             <div class="panel-body">
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="white">
-                    White
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="yellow">
-                    Yellow
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="pink">
-                    Pink
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="green">
-                    Green
-                  </label>
-                  <label class="checkbox panel-label">
-                    <input type="checkbox" value="orange">
-                    Orange
-                  </label>
+              <label class="checkbox panel-label" data-ng-repeat="color in ballColors">
+                <input type="checkbox" value="{{color.label}}" ng-model="color.selected" ng-change="find()">
+                {{color.label}}
+              </label>
             </div>
           </div>
 

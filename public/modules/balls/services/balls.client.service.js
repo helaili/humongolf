@@ -8,9 +8,9 @@ angular.module('balls').factory('Balls', ['$resource',
 			update: {
 				method: 'PUT'
 			},
-    	listBrands: {
+    	distinctValues : {
       	method : 'GET',
-      	url : 'balls/listBrands',
+      	url : 'balls/distinctValues',
       	isArray: true
 			},
 			list: {

@@ -14,10 +14,15 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		Global.setShowCarousel(false);
 
+		var filterCriterias = [
+			{'var' : 'ballBrands', 'attribute' : 'brand', 'filter' : 'brands'},
+			{'var' : 'ballColors', 'attribute' : 'color', 'filter' : 'colors'},
+			{'var' : 'ballPieces', 'attribute' : 'pieces', 'filter' : 'pieces'}
+		];
+
 
 		var getAllImages = function(ball) {
 			Balls.getAllImages({'_id' : ball._id}, function(response) {
-				//$scope.images = response;
 				ball.allImages = response;
 			});
 		};
@@ -79,40 +84,51 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			});
 		};
 
-		function initializeBallBrands() {
-			if(!$rootScope.ballBrands) {
-				Balls.listBrands(function(listOfBrandStrings) {
-					var brands = [];
-					for(var index = 0; index < listOfBrandStrings.length; index++) {
-						brands.push({'label' : listOfBrandStrings[index], 'selected' : false});
+		function initializeSearchCriteria(filters, criteria) {
+			if(!$rootScope[criteria.var]) {
+				Balls.distinctValues({'attribute' : criteria.attribute}, function(listOfStrings) {
+					var values = [];
+					for(var index = 0; index < listOfStrings.length; index++) {
+						values.push({'label' : listOfStrings[index], 'selected' : false});
 					}
-					$rootScope.ballBrands = brands;
+					$rootScope[criteria.var] = values;
+					initializeSearchSelection(filters, criteria)
 				});
+			} else {
+				initializeSearchSelection(filters, criteria);
 			}
-		}
+		};
+
+
+		function initializeSearchSelection(filters, criteria) {
+			if($rootScope[criteria.var]) {
+				for(var index = 0; index < $rootScope[criteria.var].length; index++) {
+					if($rootScope[criteria.var][index].selected === true) {
+						if(!filters[criteria.filter]) {
+							filters[criteria.filter] = [];
+						}
+						filters[criteria.filter].push($rootScope[criteria.var][index].label);
+					}
+				}
+			}
+		};
+
+
 
 
 		// Find a list of Balls
 		$scope.find = function() {
 			var filters = { };
 
-			initializeBallBrands();
+			for(var filterCriteriasIndex = 0; filterCriteriasIndex < filterCriterias.length; filterCriteriasIndex++) {
+				initializeSearchCriteria(filters, filterCriterias[filterCriteriasIndex]);
+
+			}
 
 			if(($scope.publishedTrue && !$scope.publishedFalse) || (!$scope.publishedTrue && $scope.publishedFalse)) {
 				filters.published = $scope.publishedTrue;
 			}
 
-
-			if($rootScope.ballBrands) {
-				for(var index = 0; index < $rootScope.ballBrands.length; index++) {
-					if($rootScope.ballBrands[index].selected === true) {
-						if(!filters.brands) {
-							filters.brands = [];
-						}
-						filters.brands.push($rootScope.ballBrands[index].label);
-					}
-				}
-			}
 
 			$scope.balls = Balls.query({'filters' : filters});
 			$rootScope.balls = $scope.balls;
@@ -184,18 +200,11 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			}
 		};
 
-		//TODO : remove = and use callback
-		$scope.listBrands = function() {
-			if(!$scope.brands) {
-				$scope.brands = Balls.listBrands();
-			}
-		};
-
 		// Find a list of Balls
 		//TODO : Merge this function with find()
 		$scope.listAll = function() {
 			$scope.editFlags = {};
-			initializeBallBrands();
+			initializeSearchCriteria('ballBrands', 'brand');
 
 			if($scope.brandFilter === 'NONE' && $rootScope.brandFilter) {
 				$scope.brandFilter = $rootScope.brandFilter;
