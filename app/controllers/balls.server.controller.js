@@ -474,6 +474,7 @@ exports.unmerge = function(req, res) {
 exports.getAllImages = function(req, res) {
 	Ball.db.collection('importedBalls').find({'published_ball' : req.ball._id}, {'images' : 1}, function(findImportedBallsErr, importedBalls) {
 
+
 		if(findImportedBallsErr)  {
 			console.log(findImportedBallsErr);
 			return res.send(400, {

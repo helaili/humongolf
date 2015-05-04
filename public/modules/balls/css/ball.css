@@ -94,3 +94,7 @@ footer {
   position: absolute;
   bottom: 35px;
 }
+
+.image-picker {
+	margin : 40px 0 20px;
+}

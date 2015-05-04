@@ -114,7 +114,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.findOne = function() {
 			$scope.ball = null;
-			$scope.findOneFromCache();
+			//$scope.findOneFromCache();
 			if(!$scope.ball) {
 				$scope.findOneFromServer();
 			}
@@ -326,6 +326,12 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				$scope.images = response;
 				console.log(response);
 			});
+		};
+
+		$scope.changeImage = function(newImage, size) {
+			var ball = $scope.ball;
+			ball.images[size] = newImage;
+			$scope.update();
 		};
 
 

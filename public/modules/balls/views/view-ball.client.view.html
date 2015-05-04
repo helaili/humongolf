@@ -190,13 +190,22 @@
 						<button type="reset" class="btn btn-default" ng-click="cancelEdit()">Cancel</button>
 					</div>
 				</div>
+
+
 			</form>
 		</div>
-		<div ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
 
+
+	</div>
+	<div class="image-picker" ng-if="authentication.user != null && authentication.user.roles.indexOf('admin') >= 0">
+		<h4>Small images selection</h4>
+		<div data-ng-repeat="smallImage in images.small" >
+			<input type="radio" value="{{smallImage}}" ng-model="ball.images.small"  ng-click="changeImage(smallImage, 'small')"/><img src="/modules/balls/img/{{smallImage}}" alt="{{smallImage}}">
 		</div>
-
-
+		<h4>Large images selection</h4>
+		<div data-ng-repeat="largeImage in images.large" >
+			<input type="radio" value="{{largeImage}}" ng-model="ball.images.large" ng-click="changeImage(largeImage, 'large')"/><img src="/modules/balls/img/{{largeImage}}" alt="{{largeImage}}" style="width: 400px; height: 400px;">
+		</div>
 	</div>
 
 
