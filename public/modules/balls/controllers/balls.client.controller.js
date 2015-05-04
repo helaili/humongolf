@@ -141,7 +141,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 
 
-		// Find a list of Balls
+		// Find a list of Balls based on one single brand
 		$scope.findWithBrand = function() {
 			$scope.editFlags = {};
 			var filters = {};
