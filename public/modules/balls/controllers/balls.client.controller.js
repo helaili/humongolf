@@ -15,6 +15,13 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		Global.setShowCarousel(false);
 
 
+		var getAllImages = function(ball) {
+			Balls.getAllImages({'_id' : ball._id}, function(response) {
+				//$scope.images = response;
+				ball.allImages = response;
+			});
+		};
+
 
 		$scope.publishedCheckboxChanged = function(publish) {
 			if(publish) {
@@ -114,7 +121,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.findOne = function() {
 			$scope.ball = null;
-			//$scope.findOneFromCache();
+			$scope.findOneFromCache();
 			if(!$scope.ball) {
 				$scope.findOneFromServer();
 			}
@@ -126,7 +133,9 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			Balls.get({ballId: $stateParams.ballId}, function(ball) {
 				$scope.ball = ball;
 
-				$scope.getAllImages(ball);
+				if($scope.authentication.user && $scope.authentication.user.roles.indexOf('admin') >= 0) {
+					getAllImages(ball);
+				}
 
 				//Refresh cached objects
 				if($rootScope.balls && $rootScope.balls.length > 0) {
@@ -137,6 +146,9 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 							break;
 						}
 					}
+				} else {
+					$rootScope.balls = [];
+					$rootScope.balls.push(ball);
 				}
 			});
 		};
@@ -149,6 +161,12 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 				while(++counter < $rootScope.balls.length) {
 					if($stateParams.ballId === $rootScope.balls[counter]._id) {
 						$scope.ball = $rootScope.balls[counter];
+
+						if(!$scope.ball.allImages && $scope.authentication.user && $scope.authentication.user.roles.indexOf('admin') >= 0) {
+							getAllImages($scope.ball);
+						}
+
+
 						if(counter > 0) {
 							$scope.previousBallId = $rootScope.balls[counter-1]._id;
 						} else {
@@ -319,13 +337,6 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.openViewBallTab = function(ball) {
 			$window.open('/#!/balls/'+ball._id);
-		};
-
-		$scope.getAllImages = function(ball) {
-			Balls.getAllImages({'_id' : ball._id}, function(response) {
-				$scope.images = response;
-				console.log(response);
-			});
 		};
 
 		$scope.changeImage = function(newImage, size) {
