@@ -23,6 +23,10 @@ angular.module('balls').factory('Balls', ['$resource',
   			url : 'balls/listAll',
   			isArray: true
 			},
+			getAllImages: {
+				method : 'POST',
+  			url : 'balls/:ballId/getImages'
+			},
 			setProperties: {
 				method : 'POST',
       	url : 'balls/:ballId/setProperties'

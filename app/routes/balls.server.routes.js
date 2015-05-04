@@ -17,6 +17,9 @@ module.exports = function(app) {
 	app.route('/balls/merge')
 		.post(users.requiresLogin, balls.hasAuthorization, balls.merge);
 
+	app.route('/balls/:ballId/getImages')
+			.post(users.requiresLogin, balls.hasAuthorization, balls.getAllImages);
+
 	app.route('/balls/:ballId/unmerge')
 		.post(users.requiresLogin, balls.hasAuthorization, balls.unmerge);
 

@@ -189,7 +189,7 @@ exports.listBrands = function(req, res) {
  * Ball middleware
  */
 exports.ballByID = function(req, res, next, id) {
-	Ball.findById(id).populate('user', 'displayName').exec(function(err, ball) {
+	Ball.findById(id).exec(function(err, ball) {
 		if (err) return next(err);
 		if (! ball) return next(new Error('Failed to load Ball ' + id));
 		req.ball = ball ;
@@ -375,7 +375,6 @@ exports.merge = function(req, res) {
 };
 
 exports.unmerge = function(req, res) {
-	console.log("unmerging " + req.ball._id);
 	Ball.where({'_id' : req.ball._id}).findOne(function(err, ball) {
 		if (err) {
 			return res.send(400, {
@@ -476,6 +475,36 @@ exports.unmerge = function(req, res) {
 					});
 				}
 
+			});
+		}
+	});
+};
+
+exports.getAllImages = function(req, res) {
+	Ball.db.collection('importedBalls').find({'published_ball' : req.ball._id}, {'images' : 1}, function(findImportedBallsErr, importedBalls) {
+
+		if(findImportedBallsErr)  {
+			console.log(findImportedBallsErr);
+			return res.send(400, {
+				message: getErrorMessage(findImportedBallsErr)
+			});
+		} else {
+			var response = {'small' : [], 'large' : []};
+			importedBalls.each(function(err, ball) {
+				if(err) {
+					console.log(err);
+					return res.send(400, {
+						message: getErrorMessage(err)
+					});
+				}
+
+				if(ball != null) {
+					response.small.push(ball.images.small);
+					response.large.push(ball.images.large);
+				} else {
+					//Cursor is exhausted
+					return res.send(200, response);
+				}
 			});
 		}
 	});

@@ -111,20 +111,38 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 			$rootScope.balls = $scope.balls;
 		};
 
-		// Find existing Ball
-		$scope.findOne = function() {
-			if($rootScope.balls != null && $rootScope.balls.length > 0) {
-				foundOne();
-			} else {
-				$scope.ball = Balls.get({ballId: $stateParams.ballId}, function(response) {
-					foundOne();
-				});
-			}
 
+		$scope.findOne = function() {
+			$scope.ball = null;
+			$scope.findOneFromCache();
+			if($scope.ball == null) {
+				$scope.findOneFromServer();
+			}
+		}
+
+
+		// Retrieve a ball from the server
+		$scope.findOneFromServer = function() {
+			Balls.get({ballId: $stateParams.ballId}, function(ball) {
+				$scope.ball = ball;
+
+				$scope.getAllImages(ball);
+
+				//Refresh cached objects
+				if($rootScope.balls != null && $rootScope.balls.length > 0) {
+					var counter = -1;
+					while(++counter < $rootScope.balls.length) {
+						if(ball._id === $rootScope.balls[counter]._id) {
+							$rootScope.balls[counter] = ball;
+							break;
+						}
+					}
+				}
+			});
 		};
 
-
-		function foundOne() {
+		// Retrieve a ball from the local cache
+		$scope.findOneFromCache = function() {
 			var counter = -1;
 			if($rootScope.balls != null && $rootScope.balls.length > 0) {
 
@@ -146,8 +164,9 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 					}
 				}
 			}
-		}
+		};
 
+		//TODO : remove = and use callback
 		$scope.listBrands = function() {
 			if($scope.brands == null) {
 				$scope.brands = Balls.listBrands();
@@ -155,6 +174,7 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 		};
 
 		// Find a list of Balls
+		//TODO : Merge this function with find()
 		$scope.listAll = function() {
 			$scope.editFlags = {};
 			initializeBallBrands();
@@ -299,6 +319,15 @@ angular.module('balls').controller('BallsController', ['$rootScope', '$scope', '
 
 		$scope.openViewBallTab = function(ball) {
 			$window.open('/#!/balls/'+ball._id);
-		}
+		};
+
+		$scope.getAllImages = function(ball) {
+			Balls.getAllImages({'_id' : ball._id}, function(response) {
+				$scope.images = response;
+				console.log(response)
+			});
+		};
+
+
 	}
 ]);
