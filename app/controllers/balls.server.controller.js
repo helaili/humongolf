@@ -177,13 +177,21 @@ exports.listAll = function(req, res) {
  */
 exports.distinctValues = function(req, res) {
 	var attribute = req.query.attribute;
+	var publishedFilter = {'published': true};
+	var noCache = false;
 
+
+	if(req.query.publishedOnly === 'false' || req.query.publishedOnly === false) {
+		publishedFilter = {};
+		noCache = true;
+	}
 
 	if(attribute) {
-		if(cache[attribute]) {
+		if(cache[attribute] && !noCache) {
 			res.jsonp(cache[attribute]);
 		} else {
-			Ball.distinct(attribute, {'published': true}).exec(function(err, values) {
+			//TODO : Need to sort 
+			Ball.distinct(attribute, publishedFilter).exec(function(err, values) {
 				if (err) {
 					return res.send(400, {
 						message: getErrorMessage(err)
